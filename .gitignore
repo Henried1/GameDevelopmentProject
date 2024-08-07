@@ -1,0 +1,37 @@
+# Ignore Visual Studio temporary files, build results, and
+# MonoGame intermediate files
+*.user
+*.suo
+*.cache
+*.ilk
+*.log
+*.obj
+*.pch
+*.pdb
+*.exe
+*.dll
+*.local
+*.ipch
+*.iobj
+*.ipdb
+*.tlog
+*.vspscc
+*.vssscc
+*.vscode
+
+# MonoGame specific files
+Content/Debug/
+Content/Release/
+
+# Visual Studio Code workspace settings
+.vscode/
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# MonoGame pipeline tool
+PipelineObjects/
+
+# Visual Studio folder
+.vs/
