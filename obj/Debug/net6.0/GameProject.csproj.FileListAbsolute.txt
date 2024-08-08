@@ -71,3 +71,4 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\ref\GameProject.dll
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MapAssets\Ground_02.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MapAssets\Background_01.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.sourcelink.json

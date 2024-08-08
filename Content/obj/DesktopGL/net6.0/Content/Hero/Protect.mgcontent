@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Hero/Protect.png</SourceFile>
-  <SourceTime>2024-07-17T12:44:46+02:00</SourceTime>
+  <SourceTime>2024-08-07T18:17:44.1442209+02:00</SourceTime>
   <DestFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/bin/DesktopGL/Content/Hero/Protect.xnb</DestFile>
-  <DestTime>2024-08-07T14:26:29.5757775+02:00</DestTime>
+  <DestTime>2024-08-07T18:26:52.7713295+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

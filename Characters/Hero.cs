@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameProject.Animations;
-using GameProject.Movements;
+using GameProject.Mechanics;
 
 namespace GameProject.Characters
 {
