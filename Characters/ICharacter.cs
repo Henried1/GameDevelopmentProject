@@ -8,9 +8,9 @@ namespace GameProject.Characters
     public interface ICharacter
     {
         void LoadContent(ContentManager content);
-        void Update(GameTime gameTime, KeyboardState keyboardState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight);
+        void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight);
         void Draw(SpriteBatch spriteBatch);
         int Height { get; }
-        Vector2 Position { get; set; } // Add this line
+        Vector2 Position { get; set; }
     }
 }

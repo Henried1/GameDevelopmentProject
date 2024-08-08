@@ -39,6 +39,12 @@ namespace GameProject.Animations
             spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0f);
         }
 
+        public void Reset()
+        {
+            _currentFrame = 0;
+            _frameTimer = FrameTime;
+        }
+
         public int FrameHeight => _frameHeight;
     }
 }

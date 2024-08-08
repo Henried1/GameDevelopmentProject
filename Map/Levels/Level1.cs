@@ -27,12 +27,16 @@ namespace GameProject.Map.Levels
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
             };
 
-            // Load textures
             Texture2D groundTexture = _content.Load<Texture2D>("MapAssets/Ground_02");
             Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
             collisionTexture.SetData(new[] { Color.White });
 
             return new TileMap(tileMapArray, groundTexture, collisionTexture);
+        }
+
+        public Texture2D LoadBackground()
+        {
+            return _content.Load<Texture2D>("MapAssets/Background_01");
         }
     }
 }
