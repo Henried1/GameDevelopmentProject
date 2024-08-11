@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace GameProject.Characters
+namespace GameProject.Characters.Interfaces
 {
     public interface ICharacter
     {
@@ -12,5 +12,7 @@ namespace GameProject.Characters
         void Draw(SpriteBatch spriteBatch);
         int Height { get; }
         Vector2 Position { get; set; }
+        void TakeDamage(int damage);
+        bool IsDead { get; }
     }
 }

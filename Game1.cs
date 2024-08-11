@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Managers;
 using GameProject.Map.Levels;
+
 namespace GameProject
 {
     public class Game1 : Game
@@ -37,7 +38,6 @@ namespace GameProject
             var level1 = new Level1(Content, GraphicsDevice);
             _mapManager.LoadLevel(level1);
 
-            // Resize the window to fit the tilemap
             var tileMap = _mapManager.GetTileMap();
             int tileWidth = tileMap.TileWidth;
             int tileHeight = tileMap.TileHeight;
@@ -48,7 +48,7 @@ namespace GameProject
             _graphics.PreferredBackBufferHeight = mapHeight;
             _graphics.ApplyChanges();
 
-            // Initialize the hero
+            // Initialize the hero and slime
             _gameManager.InitializeHero(tileMap);
         }
 
@@ -64,11 +64,9 @@ namespace GameProject
 
             _spriteBatch.Begin();
 
-            // Draw the background
             var backgroundTexture = _mapManager.GetBackgroundTexture();
             _spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
 
-            // Draw the tilemap and hero
             _mapManager.Draw(_spriteBatch);
             _gameManager.Draw(_spriteBatch);
 
@@ -76,5 +74,7 @@ namespace GameProject
 
             base.Draw(gameTime);
         }
+
+
     }
 }

@@ -8,43 +8,44 @@ namespace GameProject.Animations
         private Texture2D _texture;
         private int _frameCount;
         private int _currentFrame;
-        private double _frameTimer;
-        private const double FrameTime = 100; // Time per frame in milliseconds
-        private int _frameWidth;
-        private int _frameHeight;
+        private double _frameTime;
+        private double _timeCounter;
 
-        public Animation(Texture2D texture, int frameCount)
+        public Animation(Texture2D texture, int frameCount, double frameTime = 0.2)
         {
             _texture = texture;
             _frameCount = frameCount;
+            _frameTime = frameTime;
             _currentFrame = 0;
-            _frameTimer = FrameTime;
-            _frameWidth = _texture.Width / _frameCount;
-            _frameHeight = _texture.Height;
+            _timeCounter = 0;
         }
+
+        public int CurrentFrame
+        {
+            get => _currentFrame;
+            set => _currentFrame = value % _frameCount;
+        }
+
+        public int FrameHeight => _texture.Height;
+        public int FrameWidth => _texture.Width / _frameCount;
+        public int FrameCount => _frameCount;
 
         public void Update(GameTime gameTime)
         {
-            _frameTimer -= gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (_frameTimer <= 0)
+            _timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            if (_timeCounter >= _frameTime)
             {
-                _frameTimer = FrameTime;
                 _currentFrame = (_currentFrame + 1) % _frameCount;
+                _timeCounter -= _frameTime;
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffect)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects, float scale = 1f)
         {
-            Rectangle sourceRectangle = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, _frameHeight);
-            spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0f);
+            int frameWidth = _texture.Width / _frameCount;
+            int frameHeight = _texture.Height;
+            Rectangle sourceRectangle = new Rectangle(_currentFrame * frameWidth, 0, frameWidth, frameHeight);
+            spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, 0, Vector2.Zero, scale, spriteEffects, 0);
         }
-
-        public void Reset()
-        {
-            _currentFrame = 0;
-            _frameTimer = FrameTime;
-        }
-
-        public int FrameHeight => _frameHeight;
     }
 }
