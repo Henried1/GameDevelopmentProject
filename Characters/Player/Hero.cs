@@ -102,6 +102,7 @@ namespace GameProject.Characters.Player
 
         public void Draw(SpriteBatch spriteBatch)
         {
+
             if (_isDead)
             {
                 _deathAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
@@ -129,6 +130,10 @@ namespace GameProject.Characters.Player
             {
                 _idleAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
             }
+
+            Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            hitboxTexture.SetData(new[] { Color.Red });
+            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
         }
 
         public void TakeDamage(int damage)
@@ -171,12 +176,15 @@ namespace GameProject.Characters.Player
         {
             get
             {
-                // Adjust the hitbox dimensions as needed
-                int hitboxWidth = 40;
-                int hitboxHeight = 30;
-                return new Rectangle((int)Position.X, (int)Position.Y, hitboxWidth, hitboxHeight);
+                int hitboxWidth = (int)(_idleAnimation.FrameWidth * 0.6f); 
+                int hitboxHeight = (int)(_idleAnimation.FrameHeight * 0.5f);
+                int hitboxX = (int)(_movement.Position.X + (_idleAnimation.FrameWidth - hitboxWidth) / 2);
+                int hitboxY = (int)(_movement.Position.Y + (_idleAnimation.FrameHeight - hitboxHeight)); 
+
+                return new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             }
         }
+
 
         public void OnCollision(ICollidable other)
         {

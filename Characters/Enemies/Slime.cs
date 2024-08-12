@@ -8,7 +8,7 @@ using GameProject.Characters.Player;
 
 namespace GameProject.Characters
 {
-    public class Slime : ICharacter,ICollidable
+    public class Slime : ICharacter, ICollidable
     {
         private Animation _idleAnimation;
         private Animation _walkAnimation;
@@ -22,6 +22,7 @@ namespace GameProject.Characters
 
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
+
         public Slime(Vector2 startPosition)
         {
             _position = startPosition;
@@ -68,6 +69,16 @@ namespace GameProject.Characters
                 }
             }
 
+            // Check for ground collision
+            if (!IsCollidingWithGround(_position, tileMap, tileWidth, tileHeight))
+            {
+                _position.Y += 1; // Apply gravity
+            }
+            else
+            {
+                _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
+            }
+
             if (_isWalking)
             {
                 _walkAnimation.Update(gameTime);
@@ -76,6 +87,31 @@ namespace GameProject.Characters
             {
                 _idleAnimation.Update(gameTime);
             }
+        }
+
+        private bool IsCollidingWithGround(Vector2 position, int[,] tileMap, int tileWidth, int tileHeight)
+        {
+            int tileX = (int)(position.X / tileWidth);
+            int tileY = (int)((position.Y + Height) / tileHeight);
+
+            if (tileX < 0 || tileX >= tileMap.GetLength(1) || tileY < 0 || tileY >= tileMap.GetLength(0))
+            {
+                return false;
+            }
+
+            return tileMap[tileY, tileX] == 1;
+        }
+
+        private float SnapToGround(float yPosition, int[,] tileMap, int tileWidth, int tileHeight)
+        {
+            int tileY = (int)((yPosition + Height) / tileHeight);
+
+            while (tileY < tileMap.GetLength(0) && tileMap[tileY, (int)(_position.X / tileWidth)] != 1)
+            {
+                tileY++;
+            }
+
+            return tileY * tileHeight - Height;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -88,6 +124,11 @@ namespace GameProject.Characters
             {
                 _idleAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
             }
+
+            // Visualize the hitbox
+            Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            hitboxTexture.SetData(new[] { Color.Red });
+            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
         }
 
         public void TakeDamage(int damage)
@@ -98,16 +139,22 @@ namespace GameProject.Characters
                 _isDead = true;
             }
         }
+
         public Rectangle Hitbox
         {
             get
             {
-                // colission range
-                int boundingBoxWidth = 50;
-                int boundingBoxHeight = 5; 
-                return new Rectangle((int)Position.X, (int)Position.Y, boundingBoxWidth, boundingBoxHeight);
+
+                int hitboxWidth = (int)(_walkAnimation.FrameWidth * 0.45f);
+                int hitboxHeight = (int)(_walkAnimation.FrameHeight * 0.3f);
+                int hitboxX = (int)(_position.X + (_walkAnimation.FrameWidth - hitboxWidth) / 2);
+                int hitboxY = (int)(_position.Y + (_walkAnimation.FrameHeight - hitboxHeight)); 
+
+                return new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             }
         }
+
+
         public void OnCollision(ICollidable other)
         {
             if (other is Hero hero)
