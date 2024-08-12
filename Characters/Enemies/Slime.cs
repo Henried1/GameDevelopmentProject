@@ -30,7 +30,7 @@ namespace GameProject.Characters
             _position = startPosition;
             _isWalking = false;
             _isDead = false;
-            _healthPoints = 10; // Initial health points set to 10
+            _healthPoints = 10; 
             _fps = 10.0;
             _timePerFrame = 1.0 / _fps;
         }
