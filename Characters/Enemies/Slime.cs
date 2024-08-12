@@ -22,13 +22,15 @@ namespace GameProject.Characters
 
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
+        public bool IsDead => _isDead;
+
 
         public Slime(Vector2 startPosition)
         {
             _position = startPosition;
             _isWalking = false;
             _isDead = false;
-            _healthPoints = 50; // Initial health points
+            _healthPoints = 10; // Initial health points set to 10
             _fps = 10.0;
             _timePerFrame = 1.0 / _fps;
         }
@@ -44,6 +46,12 @@ namespace GameProject.Characters
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
         {
+            if (_isDead)
+            {
+                // Skip updating if the slime is dead
+                return;
+            }
+
             _timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
             if (_timeCounter >= _timePerFrame)
@@ -116,6 +124,12 @@ namespace GameProject.Characters
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_isDead)
+            {
+                // Skip drawing if the slime is dead
+                return;
+            }
+
             if (_isWalking)
             {
                 _walkAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
@@ -144,49 +158,29 @@ namespace GameProject.Characters
         {
             get
             {
-
                 int hitboxWidth = (int)(_walkAnimation.FrameWidth * 0.45f);
                 int hitboxHeight = (int)(_walkAnimation.FrameHeight * 0.3f);
                 int hitboxX = (int)(_position.X + (_walkAnimation.FrameWidth - hitboxWidth) / 2);
-                int hitboxY = (int)(_position.Y + (_walkAnimation.FrameHeight - hitboxHeight)); 
+                int hitboxY = (int)(_position.Y + (_walkAnimation.FrameHeight - hitboxHeight));
 
                 return new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             }
         }
 
-
         public void OnCollision(ICollidable other)
         {
             if (other is Hero hero)
             {
-                Rectangle intersection = Rectangle.Intersect(this.Hitbox, hero.Hitbox);
-                if (intersection.Width > intersection.Height)
+                // Check if the slime is dead before applying damage to the hero
+                if (!this.IsDead)
                 {
-                    // Vertical collision
-                    if (this.Position.Y < hero.Position.Y)
-                    {
-                        this.Position = new Vector2(this.Position.X, this.Position.Y - intersection.Height);
-                    }
-                    else
-                    {
-                        this.Position = new Vector2(this.Position.X, this.Position.Y + intersection.Height);
-                    }
-                }
-                else
-                {
-                    // Horizontal collision
-                    if (this.Position.X < hero.Position.X)
-                    {
-                        this.Position = new Vector2(this.Position.X - intersection.Width, this.Position.Y);
-                    }
-                    else
-                    {
-                        this.Position = new Vector2(this.Position.X + intersection.Width, this.Position.Y);
-                    }
-                }
+                    hero.TakeDamage(1);
 
-                // Apply damage or other effects
-                this.TakeDamage(1);
+                    if (hero.AttackHitbox.Intersects(this.Hitbox))
+                    {
+                        this.TakeDamage(10);
+                    }
+                }
             }
         }
 
@@ -196,6 +190,5 @@ namespace GameProject.Characters
             set => _position = value;
         }
 
-        public bool IsDead => _isDead;
     }
 }

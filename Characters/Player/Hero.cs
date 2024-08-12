@@ -30,10 +30,10 @@ namespace GameProject.Characters.Player
         public Hero(Vector2 startPosition, float speed)
         {
             _movement = new PlayerMovement(startPosition, speed, 0); // Temporary height value
-            _healthPoints = 100; // Initial health points
+            _healthPoints = 100;
             _isDead = false;
             _isAttacking = false;
-            _attackCooldown = 0.5; // Cooldown time in seconds
+            _attackCooldown = 0.5;
             _attackTimer = 0;
         }
 
@@ -190,9 +190,19 @@ namespace GameProject.Characters.Player
         {
             if (other is Slime slime)
             {
-                // Handle collision without affecting movement
-                this.TakeDamage(1);
+                if (!slime.IsDead)
+                {
+                    this.TakeDamage(1);
+
+                    if (_isAttacking && AttackHitbox.Intersects(slime.Hitbox))
+                    {
+                        slime.TakeDamage(10); 
+                    }
+                }
             }
         }
+
+
+
     }
 }

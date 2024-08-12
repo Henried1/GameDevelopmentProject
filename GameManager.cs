@@ -101,24 +101,14 @@ namespace GameProject.Managers
 
             if (_hero is ICollidable heroCollidable && _slime is ICollidable slimeCollidable)
             {
-                if (heroCollidable.Hitbox.Intersects(slimeCollidable.Hitbox))
+                if (slimeCollidable is Slime slime && !slime.IsDead && heroCollidable.Hitbox.Intersects(slimeCollidable.Hitbox))
                 {
                     heroCollidable.OnCollision(slimeCollidable);
                     slimeCollidable.OnCollision(heroCollidable);
                 }
             }
-
-            if (_hero is Hero hero)
-            {
-                Rectangle attackHitbox = hero.AttackHitbox;
-                // Check for collisions with enemies or other objects here
-                // Example:
-                /* if (attackHitbox.Intersects(_slime.BoundingBox))
-                 {
-                     _slime.TakeDamage(attackDamage);
-                 }*/
-            }
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {

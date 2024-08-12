@@ -64,5 +64,10 @@ namespace GameProject.Map
 
             return Vector2.Zero;
         }
+        public Rectangle GetBounds()
+        {
+            return new Rectangle(0, 0, Width * TileWidth, Height * TileHeight);
+        }
+
     }
 }
