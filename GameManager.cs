@@ -15,7 +15,7 @@ namespace GameProject.Managers
     public class GameManager
     {
         private ICharacter _hero;
-        private List<Enemy> _enemies; // List to store all enemies
+        private List<Enemy> _enemies; 
         private readonly ContentManager _content;
         private readonly GraphicsDeviceManager _graphics;
         private TileMap _tileMap;
@@ -28,7 +28,7 @@ namespace GameProject.Managers
             _content = content;
             _graphics = graphics;
             _isGameOver = false;
-            _enemies = new List<Enemy>(); // Initialize the list
+            _enemies = new List<Enemy>(); 
         }
 
         public void InitializeHero(TileMap tileMap)

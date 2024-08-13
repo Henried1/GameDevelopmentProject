@@ -12,6 +12,16 @@ namespace GameProject.Characters.Player
 {
     public class Hero : ICharacter, ICollidable
     {
+        private enum HeroState
+        {
+            Idle,
+            Walking,
+            Attacking,
+            Jumping,
+            Dying
+        }
+
+        private HeroState _currentState;
         private Animation _idleAnimation;
         private Animation _walkAnimation;
         private Animation _attackAnimation;
@@ -20,7 +30,6 @@ namespace GameProject.Characters.Player
         private PlayerMovement _movement;
         private int _healthPoints;
         private bool _isDead;
-        private bool _isAttacking;
         private double _attackCooldown;
         private double _attackTimer;
         public event Action OnDamageTaken;
@@ -30,12 +39,12 @@ namespace GameProject.Characters.Player
 
         public Hero(Vector2 startPosition, float speed)
         {
-            _movement = new PlayerMovement(startPosition, speed, 0); // Temporary height value
+            _movement = new PlayerMovement(startPosition, speed, 0);
             _healthPoints = 100;
             _isDead = false;
-            _isAttacking = false;
             _attackCooldown = 0.5;
             _attackTimer = 0;
+            _currentState = HeroState.Idle;
         }
 
         public void LoadContent(ContentManager content)
@@ -50,7 +59,7 @@ namespace GameProject.Characters.Player
             _walkAnimation = new Animation(walkTexture, 8);
             _attackAnimation = new Animation(attackTexture, 4);
             _jumpAnimation = new Animation(jumpTexture, 7);
-            _deathAnimation = new Animation(deathTexture, 4); // 4 frames for death animation
+            _deathAnimation = new Animation(deathTexture, 4); 
 
             _movement = new PlayerMovement(_movement.Position, _movement.Speed, Height);
         }
@@ -59,6 +68,7 @@ namespace GameProject.Characters.Player
         {
             if (_isDead)
             {
+                _currentState = HeroState.Dying;
                 _deathAnimation.Update(gameTime);
                 return;
             }
@@ -74,30 +84,45 @@ namespace GameProject.Characters.Player
 
             if (mouseState.LeftButton == ButtonState.Pressed && _attackTimer >= _attackCooldown)
             {
-                _isAttacking = true;
+                _currentState = HeroState.Attacking;
                 _attackTimer = 0;
-                _attackAnimation.CurrentFrame = 0; // Reset the attack animation frame
+                _attackAnimation.CurrentFrame = 0; 
             }
 
-            if (_isAttacking)
+            switch (_currentState)
             {
-                _attackAnimation.Update(gameTime);
-                if (_attackAnimation.CurrentFrame == _attackAnimation.FrameCount - 1)
-                {
-                    _isAttacking = false;
-                }
-            }
-            else if (_movement.IsJumping)
-            {
-                _jumpAnimation.Update(gameTime);
-            }
-            else if (_movement.IsMoving)
-            {
-                _walkAnimation.Update(gameTime);
-            }
-            else
-            {
-                _idleAnimation.Update(gameTime);
+                case HeroState.Attacking:
+                    _attackAnimation.Update(gameTime);
+                    if (_attackAnimation.CurrentFrame == _attackAnimation.FrameCount - 1)
+                    {
+                        _currentState = HeroState.Idle;
+                    }
+                    break;
+                case HeroState.Jumping:
+                    _jumpAnimation.Update(gameTime);
+                    if (!_movement.IsJumping)
+                    {
+                        _currentState = HeroState.Idle;
+                    }
+                    break;
+                case HeroState.Walking:
+                    _walkAnimation.Update(gameTime);
+                    if (!_movement.IsMoving)
+                    {
+                        _currentState = HeroState.Idle;
+                    }
+                    break;
+                case HeroState.Idle:
+                    _idleAnimation.Update(gameTime);
+                    if (_movement.IsJumping)
+                    {
+                        _currentState = HeroState.Jumping;
+                    }
+                    else if (_movement.IsMoving)
+                    {
+                        _currentState = HeroState.Walking;
+                    }
+                    break;
             }
         }
 
@@ -114,21 +139,20 @@ namespace GameProject.Characters.Player
                 return;
             }
 
-            if (_isAttacking)
+            switch (_currentState)
             {
-                _attackAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
-            }
-            else if (_movement.IsJumping)
-            {
-                _jumpAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
-            }
-            else if (_movement.IsMoving)
-            {
-                _walkAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
-            }
-            else
-            {
-                _idleAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
+                case HeroState.Attacking:
+                    _attackAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
+                    break;
+                case HeroState.Jumping:
+                    _jumpAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
+                    break;
+                case HeroState.Walking:
+                    _walkAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
+                    break;
+                case HeroState.Idle:
+                    _idleAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
+                    break;
             }
 
             Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
@@ -162,7 +186,7 @@ namespace GameProject.Characters.Player
         {
             get
             {
-                if (_isAttacking)
+                if (_currentState == HeroState.Attacking)
                 {
                     int frameWidth = _attackAnimation.FrameWidth;
                     int frameHeight = _attackAnimation.FrameHeight;
@@ -193,7 +217,7 @@ namespace GameProject.Characters.Player
                 {
                     this.TakeDamage(1);
 
-                    if (_isAttacking && AttackHitbox.Intersects(enemy.Hitbox))
+                    if (_currentState == HeroState.Attacking && AttackHitbox.Intersects(enemy.Hitbox))
                     {
                         enemy.TakeDamage(10);
                     }
