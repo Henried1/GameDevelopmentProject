@@ -6,6 +6,7 @@ using GameProject.Animations;
 using GameProject.Mechanics;
 using System;
 using GameProject.Characters.Interfaces;
+using GameProject.Characters.Enemies;
 
 namespace GameProject.Characters.Player
 {
@@ -102,7 +103,6 @@ namespace GameProject.Characters.Player
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
             if (_isDead)
             {
                 _deathAnimation.Draw(spriteBatch, _movement.Position, _movement.SpriteEffect);
@@ -176,33 +176,29 @@ namespace GameProject.Characters.Player
         {
             get
             {
-                int hitboxWidth = (int)(_idleAnimation.FrameWidth * 0.6f); 
+                int hitboxWidth = (int)(_idleAnimation.FrameWidth * 0.6f);
                 int hitboxHeight = (int)(_idleAnimation.FrameHeight * 0.5f);
                 int hitboxX = (int)(_movement.Position.X + (_idleAnimation.FrameWidth - hitboxWidth) / 2);
-                int hitboxY = (int)(_movement.Position.Y + (_idleAnimation.FrameHeight - hitboxHeight)); 
+                int hitboxY = (int)(_movement.Position.Y + (_idleAnimation.FrameHeight - hitboxHeight));
 
                 return new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             }
         }
 
-
         public void OnCollision(ICollidable other)
         {
-            if (other is Slime slime)
+            if (other is Enemy enemy)
             {
-                if (!slime.IsDead)
+                if (!enemy.IsDead)
                 {
                     this.TakeDamage(1);
 
-                    if (_isAttacking && AttackHitbox.Intersects(slime.Hitbox))
+                    if (_isAttacking && AttackHitbox.Intersects(enemy.Hitbox))
                     {
-                        slime.TakeDamage(10); 
+                        enemy.TakeDamage(10);
                     }
                 }
             }
         }
-
-
-
     }
 }

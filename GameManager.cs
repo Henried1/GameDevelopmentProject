@@ -7,13 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using GameProject.Characters.Interfaces;
+using GameProject.Characters.Enemies;
+using System.Collections.Generic;
 
 namespace GameProject.Managers
 {
     public class GameManager
     {
         private ICharacter _hero;
-        private ICharacter _slime;
+        private List<Enemy> _enemies; // List to store all enemies
         private readonly ContentManager _content;
         private readonly GraphicsDeviceManager _graphics;
         private TileMap _tileMap;
@@ -26,7 +28,9 @@ namespace GameProject.Managers
             _content = content;
             _graphics = graphics;
             _isGameOver = false;
+            _enemies = new List<Enemy>(); // Initialize the list
         }
+
         public void InitializeHero(TileMap tileMap)
         {
             _tileMap = tileMap;
@@ -37,25 +41,29 @@ namespace GameProject.Managers
             Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
             _hero.Position = heroPosition;
 
-            _slime = new Slime(Vector2.Zero);
-            _slime.LoadContent(_content);
-
-            
-            Vector2 slimePosition = _tileMap.FindGroundPosition(_slime.Height);
-            slimePosition.X += 200; 
-            _slime.Position = slimePosition; 
-
-         
             if (_hero is Hero hero)
             {
                 hero.OnDamageTaken += OnHeroDamageTaken;
             }
 
-           
             var heartsTexture = _content.Load<Texture2D>("Hearts");
             _heartsAnimation = new Animation(heartsTexture, 3); // 3 frames
         }
 
+        public void InitializeEnemies()
+        {
+           
+            var slime = new Slime(Vector2.Zero);
+            slime.LoadContent(_content);
+
+            Vector2 slimePosition = _tileMap.FindGroundPosition(slime.Height);
+            slimePosition.X += 200;
+            slime.Position = slimePosition;
+
+            _enemies.Add(slime); 
+
+           
+        }
 
         private void OnHeroDamageTaken()
         {
@@ -77,6 +85,7 @@ namespace GameProject.Managers
                 }
             }
         }
+
         public void Update(GameTime gameTime)
         {
             if (_isGameOver)
@@ -92,23 +101,29 @@ namespace GameProject.Managers
             int screenHeight = _graphics.PreferredBackBufferHeight;
 
             _hero.Update(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
-            _slime.Update(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
+
+            foreach (var enemy in _enemies)
+            {
+                enemy.Update(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
+            }
 
             if (_hero.IsDead)
             {
                 _isGameOver = true;
             }
 
-            if (_hero is ICollidable heroCollidable && _slime is ICollidable slimeCollidable)
+            if (_hero is ICollidable heroCollidable)
             {
-                if (slimeCollidable is Slime slime && !slime.IsDead && heroCollidable.Hitbox.Intersects(slimeCollidable.Hitbox))
+                foreach (var enemy in _enemies)
                 {
-                    heroCollidable.OnCollision(slimeCollidable);
-                    slimeCollidable.OnCollision(heroCollidable);
+                    if (enemy is ICollidable enemyCollidable && !enemy.IsDead && heroCollidable.Hitbox.Intersects(enemyCollidable.Hitbox))
+                    {
+                        heroCollidable.OnCollision(enemyCollidable);
+                        enemyCollidable.OnCollision(heroCollidable);
+                    }
                 }
             }
         }
-
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -116,7 +131,10 @@ namespace GameProject.Managers
 
             _hero.Draw(spriteBatch);
 
-            _slime.Draw(spriteBatch);
+            foreach (var enemy in _enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
 
             float heartScale = 0.5f; //scale of heart
             _heartsAnimation.Draw(spriteBatch, new Vector2(0, 0), SpriteEffects.None, heartScale);

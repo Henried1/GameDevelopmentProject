@@ -50,6 +50,7 @@ namespace GameProject
 
             // Initialize the hero and slime
             _gameManager.InitializeHero(tileMap);
+            _gameManager.InitializeEnemies();
         }
 
         protected override void Update(GameTime gameTime)
