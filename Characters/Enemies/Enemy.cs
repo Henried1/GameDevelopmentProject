@@ -9,6 +9,13 @@ namespace GameProject.Characters.Enemies
 {
     public abstract class Enemy : ICharacter, ICollidable
     {
+        protected enum EnemyState
+        {
+            Idle,
+            Walking
+        }
+
+        protected EnemyState _currentState;
         protected Animation _idleAnimation;
         protected Animation _walkAnimation;
         protected Vector2 _position;
@@ -31,6 +38,7 @@ namespace GameProject.Characters.Enemies
             _healthPoints = healthPoints;
             _fps = fps;
             _timePerFrame = 1.0 / _fps;
+            _currentState = EnemyState.Idle;
         }
 
         public abstract void LoadContent(ContentManager content);
@@ -51,7 +59,7 @@ namespace GameProject.Characters.Enemies
 
             if (_isWalking)
             {
-                _position.X += 1; 
+                _position.X += 1;
                 if (_position.X > screenWidth - _walkAnimation.FrameWidth)
                 {
                     _isWalking = false;
@@ -75,13 +83,25 @@ namespace GameProject.Characters.Enemies
                 _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
             }
 
+            // Update state based on movement
             if (_isWalking)
             {
-                _walkAnimation.Update(gameTime);
+                _currentState = EnemyState.Walking;
             }
             else
             {
-                _idleAnimation.Update(gameTime);
+                _currentState = EnemyState.Idle;
+            }
+
+            // Update animation based on state
+            switch (_currentState)
+            {
+                case EnemyState.Walking:
+                    _walkAnimation.Update(gameTime);
+                    break;
+                case EnemyState.Idle:
+                    _idleAnimation.Update(gameTime);
+                    break;
             }
         }
 
@@ -117,13 +137,14 @@ namespace GameProject.Characters.Enemies
                 return;
             }
 
-            if (_isWalking)
+            switch (_currentState)
             {
-                _walkAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
-            }
-            else
-            {
-                _idleAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
+                case EnemyState.Walking:
+                    _walkAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
+                    break;
+                case EnemyState.Idle:
+                    _idleAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
+                    break;
             }
 
             // Visualize the hitbox

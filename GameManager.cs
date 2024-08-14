@@ -59,10 +59,19 @@ namespace GameProject.Managers
             Vector2 slimePosition = _tileMap.FindGroundPosition(slime.Height);
             slimePosition.X += 200;
             slime.Position = slimePosition;
+            var orc = new Orc(Vector2.Zero);
 
-            _enemies.Add(slime); 
+            orc.LoadContent(_content);
+            Vector2 orcPosition = _tileMap.FindGroundPosition(orc.Height);
+            orcPosition.X += 500;
+            orc.Position = orcPosition;
 
-           
+
+            _enemies.Add(slime);
+            _enemies.Add(orc);
+
+
+
         }
 
         private void OnHeroDamageTaken()

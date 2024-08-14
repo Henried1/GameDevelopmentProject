@@ -4,6 +4,16 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_1.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_2.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_3.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Dead.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Hurt.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Idle.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Jump.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Run.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Run+Attack.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Walk.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Slime/Attack_1.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Slime/Attack_2.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Slime/Attack_3.png</File>
@@ -29,6 +39,16 @@
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MapAssets/Ground_02.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

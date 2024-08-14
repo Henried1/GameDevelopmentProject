@@ -63,7 +63,6 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.AssemblyInfoInputs.cache
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.AssemblyInfo.cs
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.csproj.CoreCompileInputs.cache
-C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.csproj.CopyComplete
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.dll
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\refint\GameProject.dll
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProject.pdb
@@ -83,3 +82,14 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Slime\Run.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Slime\Walk.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Hearts.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Attack_1.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Attack_2.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Attack_3.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Dead.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Hurt.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Idle.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Jump.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Run+Attack.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Run.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Walk.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProj.B6B480F2.Up2Date
