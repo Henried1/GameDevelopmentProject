@@ -52,28 +52,28 @@ namespace GameProject.Managers
 
         public void InitializeEnemies()
         {
-           
             var slime = new Slime(Vector2.Zero);
             slime.LoadContent(_content);
 
             Vector2 slimePosition = _tileMap.FindGroundPosition(slime.Height);
             slimePosition.X += 200;
             slime.Position = slimePosition;
-            var orc = new Orc(Vector2.Zero);
 
+            var orc = new Orc(Vector2.Zero);
             orc.LoadContent(_content);
+
             Vector2 orcPosition = _tileMap.FindGroundPosition(orc.Height);
             orcPosition.X += 500;
             orc.Position = orcPosition;
 
+            if (_hero is Hero hero)
+            {
+                orc.SetHeroReference(hero);
+            }
 
             _enemies.Add(slime);
             _enemies.Add(orc);
-
-
-
         }
-
         private void OnHeroDamageTaken()
         {
             if (_hero is Hero hero)

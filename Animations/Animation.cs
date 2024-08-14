@@ -47,5 +47,13 @@ namespace GameProject.Animations
             Rectangle sourceRectangle = new Rectangle(_currentFrame * frameWidth, 0, frameWidth, frameHeight);
             spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, 0, Vector2.Zero, scale, spriteEffects, 0);
         }
+
+        public void Reset()
+        {
+            _currentFrame = 0;
+            _timeCounter = 0;
+        }
+
+        public bool IsComplete => _currentFrame == _frameCount - 1 && _timeCounter >= _frameTime;
     }
 }

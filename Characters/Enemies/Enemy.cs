@@ -12,7 +12,8 @@ namespace GameProject.Characters.Enemies
         protected enum EnemyState
         {
             Idle,
-            Walking
+            Walking,
+            Attacking
         }
 
         protected EnemyState _currentState;
