@@ -23,6 +23,18 @@ namespace GameProject.Characters.Enemies
             _walkAnimation = new Animation(walkTexture, 7);
         }
 
+        public override Rectangle Hitbox
+        {
+            get
+            {
+                int hitboxWidth = (int)(_walkAnimation.FrameWidth * 0.45f);
+                int hitboxHeight = (int)(_walkAnimation.FrameHeight * 0.65f);
+                int hitboxX = (int)(_position.X + (_walkAnimation.FrameWidth - hitboxWidth) / 2);
+                int hitboxY = (int)(_position.Y + (_walkAnimation.FrameHeight - hitboxHeight));
+
+                return new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
+            }
+        }
         public override void OnCollision(ICollidable other)
         {
             if (other is Hero hero)

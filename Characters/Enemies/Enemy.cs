@@ -19,12 +19,18 @@ namespace GameProject.Characters.Enemies
         protected Animation _idleAnimation;
         protected Animation _walkAnimation;
         protected Vector2 _position;
-        protected bool _isWalking;
+        protected bool _isMovingRight;
         protected bool _isDead;
         protected int _healthPoints;
         protected double _timeCounter;
         protected double _fps;
         protected double _timePerFrame;
+
+        protected double _idleTimeCounter; 
+        protected double _idleDuration = 1.0; 
+
+        protected double _walkDuration = 2.0; 
+        protected double _walkTimeCounter; 
 
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
@@ -33,12 +39,12 @@ namespace GameProject.Characters.Enemies
         public Enemy(Vector2 startPosition, int healthPoints, double fps)
         {
             _position = startPosition;
-            _isWalking = false;
+            _isMovingRight = true; // Start moving right by default
             _isDead = false;
             _healthPoints = healthPoints;
             _fps = fps;
             _timePerFrame = 1.0 / _fps;
-            _currentState = EnemyState.Idle;
+            _currentState = EnemyState.Walking; // Start with walking state
         }
 
         public abstract void LoadContent(ContentManager content);
@@ -57,21 +63,32 @@ namespace GameProject.Characters.Enemies
                 _timeCounter -= _timePerFrame;
             }
 
-            if (_isWalking)
+            switch (_currentState)
             {
-                _position.X += 1;
-                if (_position.X > screenWidth - _walkAnimation.FrameWidth)
-                {
-                    _isWalking = false;
-                }
-            }
-            else
-            {
-                _position.X -= 1;
-                if (_position.X < 0)
-                {
-                    _isWalking = true;
-                }
+                case EnemyState.Walking:
+                    _walkTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (_walkTimeCounter >= _walkDuration)
+                    {
+                        _currentState = EnemyState.Idle; // Switch to idle state
+                        _walkTimeCounter = 0; // Reset walk time counter
+                        _idleTimeCounter = 0; // Reset idle time counter
+                    }
+
+                    // Move the enemy
+                    _position.X += _isMovingRight ? 1 : -1;
+                    break;
+
+                case EnemyState.Idle:
+                    _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (_idleTimeCounter >= _idleDuration)
+                    {
+                        _currentState = EnemyState.Walking; // Switch back to walking
+                        _isMovingRight = !_isMovingRight; // Reverse direction
+                        _walkTimeCounter = 0; // Reset walk time counter
+                    }
+                    break;
             }
 
             if (!IsCollidingWithGround(_position, tileMap, tileWidth, tileHeight))
@@ -81,16 +98,6 @@ namespace GameProject.Characters.Enemies
             else
             {
                 _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
-            }
-
-            // Update state based on movement
-            if (_isWalking)
-            {
-                _currentState = EnemyState.Walking;
-            }
-            else
-            {
-                _currentState = EnemyState.Idle;
             }
 
             // Update animation based on state
@@ -137,13 +144,16 @@ namespace GameProject.Characters.Enemies
                 return;
             }
 
+            // Determine the SpriteEffects based on the direction
+            SpriteEffects spriteEffects = _isMovingRight ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
             switch (_currentState)
             {
                 case EnemyState.Walking:
-                    _walkAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
+                    _walkAnimation.Draw(spriteBatch, _position, spriteEffects);
                     break;
                 case EnemyState.Idle:
-                    _idleAnimation.Draw(spriteBatch, _position, SpriteEffects.None);
+                    _idleAnimation.Draw(spriteBatch, _position, spriteEffects);
                     break;
             }
 
@@ -162,7 +172,7 @@ namespace GameProject.Characters.Enemies
             }
         }
 
-        public Rectangle Hitbox
+        public virtual Rectangle Hitbox
         {
             get
             {

@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using GameProject.Animations;
 using GameProject.Characters.Interfaces;
 using GameProject.Characters.Player;
-using GameProject.Characters.Enemies;
 
-namespace GameProject.Characters
+namespace GameProject.Characters.Enemies
 {
     public class Slime : Enemy
     {
