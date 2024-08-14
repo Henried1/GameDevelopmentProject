@@ -10,6 +10,7 @@ namespace GameProject.Animations
         private int _currentFrame;
         private double _frameTime;
         private double _timeCounter;
+        private bool _frameJustChanged;
 
         public Animation(Texture2D texture, int frameCount, double frameTime = 0.2)
         {
@@ -18,6 +19,7 @@ namespace GameProject.Animations
             _frameTime = frameTime;
             _currentFrame = 0;
             _timeCounter = 0;
+            _frameJustChanged = false;
         }
 
         public int CurrentFrame
@@ -30,13 +32,18 @@ namespace GameProject.Animations
         public int FrameWidth => _texture.Width / _frameCount;
         public int FrameCount => _frameCount;
 
+        public bool FrameJustChanged => _frameJustChanged;
+
         public void Update(GameTime gameTime)
         {
             _timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            _frameJustChanged = false;
+
             if (_timeCounter >= _frameTime)
             {
                 _currentFrame = (_currentFrame + 1) % _frameCount;
                 _timeCounter -= _frameTime;
+                _frameJustChanged = true;
             }
         }
 
@@ -52,6 +59,7 @@ namespace GameProject.Animations
         {
             _currentFrame = 0;
             _timeCounter = 0;
+            _frameJustChanged = false;
         }
 
         public bool IsComplete => _currentFrame == _frameCount - 1 && _timeCounter >= _frameTime;

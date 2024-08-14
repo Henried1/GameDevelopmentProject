@@ -15,10 +15,12 @@ namespace GameProject.Characters.Enemies
         private double _attackCooldown;
         private double _attackCooldownTime = 5.0;
         private Hero _hero;
+        private bool _damageApplied;
 
         public Orc(Vector2 startPosition) : base(startPosition, 100, 10)
         {
             _attackCooldown = _attackCooldownTime;
+            _damageApplied = false;
         }
 
         public void SetHeroReference(Hero hero)
@@ -34,7 +36,7 @@ namespace GameProject.Characters.Enemies
 
             _idleAnimation = new Animation(idleTexture, 5);
             _walkAnimation = new Animation(walkTexture, 7);
-            _attackAnimation = new Animation(attackTexture, 4, 0.55); // Slower attack animation
+            _attackAnimation = new Animation(attackTexture, 4, 0.55);
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
@@ -59,6 +61,7 @@ namespace GameProject.Characters.Enemies
                     {
                         _currentState = EnemyState.Attacking;
                         _attackAnimation.Reset();
+                        _damageApplied = false; 
                         FaceHero();
                     }
                     else
@@ -90,6 +93,15 @@ namespace GameProject.Characters.Enemies
                 case EnemyState.Attacking:
                     _attackAnimation.Update(gameTime);
 
+                    if (_attackAnimation.CurrentFrame == 3 && _attackAnimation.FrameJustChanged && !_damageApplied)
+                    {
+                        if (this.Hitbox.Intersects(_hero.Hitbox))
+                        {
+                            _hero.TakeDamage(10);
+                            _damageApplied = true; 
+                        }
+                    }
+
                     if (_attackAnimation.IsComplete)
                     {
                         _currentState = EnemyState.Idle;
@@ -107,7 +119,7 @@ namespace GameProject.Characters.Enemies
                 _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
             }
 
-            // Update the animation based on the current state
+         
             switch (_currentState)
             {
                 case EnemyState.Walking:
@@ -137,21 +149,14 @@ namespace GameProject.Characters.Enemies
 
             float distance = Vector2.Distance(_position, _hero.Position);
 
-            float attackRange = 60f;
+            float attackRange = 80f;
 
             return distance <= attackRange;
         }
 
         public override void OnCollision(ICollidable other)
         {
-            if (other is Hero hero && _currentState == EnemyState.Attacking && _attackCooldown <= 0)
-            {
-                if (this.Hitbox.Intersects(hero.Hitbox))
-                {
-                    hero.TakeDamage(10);
-                    _attackCooldown = _attackCooldownTime; // Reset the cooldown
-                }
-            }
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -176,7 +181,6 @@ namespace GameProject.Characters.Enemies
                     break;
             }
 
-            // Visualize the hitbox
             Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             hitboxTexture.SetData(new[] { Color.Red });
             spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
