@@ -49,7 +49,12 @@ namespace GameProject.Characters.Enemies
             _currentState = EnemyState.Walking; // Start with walking state
         }
 
-        public abstract void LoadContent(ContentManager content);
+        protected ContentManager _content;
+
+        public virtual void LoadContent(ContentManager content)
+        {
+            _content = content;
+        }
 
         public virtual void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
         {

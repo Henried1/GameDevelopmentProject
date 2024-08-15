@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/fireball.png</SourceFile>
-  <SourceTime>2024-08-15T15:22:33.5980805+02:00</SourceTime>
+  <SourceTime>2024-08-15T16:38:07.450144+02:00</SourceTime>
   <DestFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/bin/DesktopGL/Enemies/FireSpirit/fireball.xnb</DestFile>
-  <DestTime>2024-08-15T15:22:47.2694819+02:00</DestTime>
+  <DestTime>2024-08-15T16:39:15.1417306+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

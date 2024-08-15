@@ -76,6 +76,7 @@ namespace GameProject.Managers
             if (_hero is Hero hero)
             {
                 orc.SetHeroReference(hero);
+                fireSpirit.SetHeroReference(hero);
             }
 
             _enemies.Add(slime);

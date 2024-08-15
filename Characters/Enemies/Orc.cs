@@ -23,7 +23,7 @@ public class Orc : Enemy
         _attackCooldown = _attackCooldownTime;
         _damageApplied = false;
         _damageTimer = 0;
-        Damage = 10; // Set the damage value for Orc
+        Damage = 2; // Set the damage value for Orc
     }
 
     public void SetHeroReference(Hero hero)
