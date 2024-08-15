@@ -1,6 +1,7 @@
 ﻿using GameProject.Animations;
 using GameProject.Characters.Interfaces;
 using GameProject.Characters.Player;
+using GameProject.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,11 +14,11 @@ namespace GameProject.Characters.Enemies
     {
         private List<Fireball> _fireballs;
         private double _fireballCooldown;
-        private double _fireballCooldownTime = 2.0; // Fireball cooldown in seconds
+        private double _fireballCooldownTime = 2.0; 
         private Hero _hero;
 
-        public FireSpirit(Vector2 startPosition, int healthPoints, double fps)
-            : base(startPosition, healthPoints, fps)
+        public FireSpirit(Vector2 startPosition, int healthPoints, double fps, GameManager gameManager)
+           : base(startPosition, healthPoints, fps, gameManager) 
         {
             _fireballs = new List<Fireball>();
             _fireballCooldown = 0;
@@ -42,8 +43,13 @@ namespace GameProject.Characters.Enemies
         {
             base.Update(gameTime, keyboardState, mouseState, tileMap, tileWidth, tileHeight, screenWidth, screenHeight);
 
+            if (!IsAlive())
+            {
+                return;
+            }
             _fireballCooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
+           
             if (_hero != null && IsPlayerInRange() && _fireballCooldown <= 0)
             {
                 ShootFireball();
@@ -57,7 +63,7 @@ namespace GameProject.Characters.Enemies
                 if (fireball.CheckCollision(_hero.Hitbox))
                 {
                     _hero.TakeDamage(fireball.Damage);
-                    fireball.MarkForRemoval = true; // Mark fireball for removal after collision
+                    fireball.MarkForRemoval = true; 
                 }
             }
 
@@ -68,8 +74,8 @@ namespace GameProject.Characters.Enemies
             Vector2 direction = _hero.Position - _position;
             direction.Normalize();
 
-            // Adjust the fireball position to be in front of the FireSpirit
-            float fireballOffset = 20f; // Adjust this value as needed
+            
+            float fireballOffset = 20f;
             Vector2 fireballPosition = _position + direction * fireballOffset;
 
             fireballPosition.Y = _position.Y + 60; 
@@ -79,7 +85,6 @@ namespace GameProject.Characters.Enemies
             fireball.LoadContent(_content);
             _fireballs.Add(fireball);
 
-            System.Diagnostics.Debug.WriteLine($"Fireball created at position: {fireballPosition}");
         }
 
 
@@ -90,7 +95,7 @@ namespace GameProject.Characters.Enemies
                 return false;
 
             float distance = Vector2.Distance(_position, _hero.Position);
-            float attackRange = 300f; // Adjust the range as needed
+            float attackRange = 300f; 
 
             return distance <= attackRange;
         }
@@ -111,6 +116,10 @@ namespace GameProject.Characters.Enemies
             {
                 hero.TakeDamage(Damage);
             }
+        }
+        public bool IsAlive()
+        {
+            return _healthPoints > 0;
         }
     }
 }

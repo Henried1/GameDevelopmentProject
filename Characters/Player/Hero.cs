@@ -27,12 +27,19 @@ namespace GameProject.Characters.Player
         private Animation _attackAnimation;
         private Animation _jumpAnimation;
         private Animation _deathAnimation;
+        private Animation _heartsAnimation;
+
         private PlayerMovement _movement;
         private int _healthPoints;
         private bool _isDead;
         private double _attackCooldown;
         private double _attackTimer;
         public event Action OnDamageTaken;
+        private Texture2D _bubbleTexture;
+        private bool _isShieldActive;
+        private double _shieldDuration;
+        private double _shieldTimer;
+
 
         public int Height => _idleAnimation?.FrameHeight ?? 0;
         public int Width => _idleAnimation?.FrameWidth ?? 0;
@@ -54,12 +61,13 @@ namespace GameProject.Characters.Player
             var attackTexture = content.Load<Texture2D>("Hero/Attack_1");
             var jumpTexture = content.Load<Texture2D>("Hero/Jump");
             var deathTexture = content.Load<Texture2D>("Hero/Dead");
+            _bubbleTexture = content.Load<Texture2D>("Powerups/Bubble"); 
 
             _idleAnimation = new Animation(idleTexture, 5);
             _walkAnimation = new Animation(walkTexture, 8);
             _attackAnimation = new Animation(attackTexture, 4);
             _jumpAnimation = new Animation(jumpTexture, 7);
-            _deathAnimation = new Animation(deathTexture, 4); 
+            _deathAnimation = new Animation(deathTexture, 4);
 
             _movement = new PlayerMovement(_movement.Position, _movement.Speed, Height);
         }
@@ -86,7 +94,7 @@ namespace GameProject.Characters.Player
             {
                 _currentState = HeroState.Attacking;
                 _attackTimer = 0;
-                _attackAnimation.CurrentFrame = 0; 
+                _attackAnimation.CurrentFrame = 0;
             }
 
             switch (_currentState)
@@ -124,6 +132,15 @@ namespace GameProject.Characters.Player
                     }
                     break;
             }
+
+            if (_isShieldActive)
+            {
+                _shieldTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_shieldTimer >= _shieldDuration)
+                {
+                    DeactivateShield();
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -155,13 +172,28 @@ namespace GameProject.Characters.Player
                     break;
             }
 
+            if (_isShieldActive)
+            {
+                float scale = 0.5f; 
+                Vector2 bubblePosition = new Vector2(
+                    _movement.Position.X + (Width / 2) - (_bubbleTexture.Width * scale / 2),
+                    _movement.Position.Y + (Height / 2) - (_bubbleTexture.Height * scale / 2) + 15
+                );
+                spriteBatch.Draw(_bubbleTexture, bubblePosition, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            }
+
             Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             hitboxTexture.SetData(new[] { Color.Red });
             spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
         }
 
+
         public void TakeDamage(int damage)
         {
+            if (_isShieldActive)
+            {
+                return;
+            }
             _healthPoints -= damage;
             OnDamageTaken?.Invoke();
             if (_healthPoints <= 0)
@@ -223,6 +255,24 @@ namespace GameProject.Characters.Player
                     }
                 }
             }
+        }
+        public void ActivateShield(double duration)
+        {
+            _isShieldActive = true;
+            _shieldDuration = duration;
+            _shieldTimer = 0;
+        }
+
+        public void DeactivateShield()
+        {
+            _isShieldActive = false;
+        }
+
+        public void RestoreFullHealth(Animation heartsAnimation)
+        {
+            _healthPoints = 100;
+            heartsAnimation.CurrentFrame = 0;
+
         }
 
     }

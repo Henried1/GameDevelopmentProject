@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using static System.Net.Mime.MediaTypeNames;
+using GameProject.Managers;
 
 public class Orc : Enemy
 {
@@ -16,14 +16,15 @@ public class Orc : Enemy
     private Hero _hero;
     private bool _damageApplied;
     private double _damageTimer;
-    private double _damageInterval = 3.0; // Damage interval in seconds
+    private double _damageInterval = 3.0; 
 
-    public Orc(Vector2 startPosition) : base(startPosition, 100, 10)
+    public Orc(Vector2 startPosition, GameManager gameManager)
+        : base(startPosition, 100, 10, gameManager)
     {
         _attackCooldown = _attackCooldownTime;
         _damageApplied = false;
         _damageTimer = 0;
-        Damage = 2; // Set the damage value for Orc
+        Damage = 2; 
     }
 
     public void SetHeroReference(Hero hero)
@@ -101,9 +102,9 @@ public class Orc : Enemy
                 {
                     if (this.Hitbox.Intersects(_hero.Hitbox) && _damageTimer >= _damageInterval)
                     {
-                        _hero.TakeDamage(Damage); // Apply damage once per interval
-                        _damageApplied = true; // Set the flag to prevent continuous damage
-                        _damageTimer = 0; // Reset the damage timer
+                        _hero.TakeDamage(Damage); 
+                        _damageApplied = true; 
+                        _damageTimer = 0; 
                     }
                 }
 

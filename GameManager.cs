@@ -9,26 +9,31 @@ using Microsoft.Xna.Framework;
 using GameProject.Characters.Interfaces;
 using GameProject.Characters.Enemies;
 using System.Collections.Generic;
+using GameProject.Powerups;
+using System.Linq;
+using System.Diagnostics;
 
 namespace GameProject.Managers
 {
     public class GameManager
     {
         private ICharacter _hero;
-        private List<Enemy> _enemies; 
+        private List<Enemy> _enemies;
         private readonly ContentManager _content;
         private readonly GraphicsDeviceManager _graphics;
         private TileMap _tileMap;
         private bool _isGameOver;
+        private List<Powerup> _powerups = new List<Powerup>();
 
         private Animation _heartsAnimation;
+        public Animation HeartsAnimation => _heartsAnimation;
 
         public GameManager(ContentManager content, GraphicsDeviceManager graphics)
         {
             _content = content;
             _graphics = graphics;
             _isGameOver = false;
-            _enemies = new List<Enemy>(); 
+            _enemies = new List<Enemy>();
         }
 
         public void InitializeHero(TileMap tileMap)
@@ -52,21 +57,21 @@ namespace GameProject.Managers
 
         public void InitializeEnemies()
         {
-            var slime = new Slime(Vector2.Zero);
+            var slime = new Slime(Vector2.Zero, this); 
             slime.LoadContent(_content);
 
             Vector2 slimePosition = _tileMap.FindGroundPosition(slime.Height);
             slimePosition.X += 200;
             slime.Position = slimePosition;
 
-            var orc = new Orc(Vector2.Zero);
+            var orc = new Orc(Vector2.Zero, this);
             orc.LoadContent(_content);
 
             Vector2 orcPosition = _tileMap.FindGroundPosition(orc.Height);
             orcPosition.X += 500;
             orc.Position = orcPosition;
 
-            var fireSpirit = new FireSpirit(Vector2.Zero, 100, 10.0);
+            var fireSpirit = new FireSpirit(Vector2.Zero, 100, 10.0, this);
             fireSpirit.LoadContent(_content);
 
             Vector2 fireSpiritPosition = _tileMap.FindGroundPosition(fireSpirit.Height);
@@ -84,6 +89,7 @@ namespace GameProject.Managers
             _enemies.Add(fireSpirit);
         }
 
+
         private void OnHeroDamageTaken()
         {
             if (_hero is Hero hero)
@@ -92,17 +98,24 @@ namespace GameProject.Managers
 
                 if (healthPercentage > 0.5f)
                 {
-                    _heartsAnimation.CurrentFrame = 0; // Full health
+                    _heartsAnimation.CurrentFrame = 0; 
                 }
                 else if (healthPercentage > 0)
                 {
-                    _heartsAnimation.CurrentFrame = 1; // Half health
+                    _heartsAnimation.CurrentFrame = 1; 
                 }
                 else
                 {
-                    _heartsAnimation.CurrentFrame = 2; // Zero health
+                    _heartsAnimation.CurrentFrame = 2; 
                 }
             }
+        }
+
+        public void AddPowerup(Powerup powerup)
+        {
+            powerup.LoadContent(_content);
+            _powerups.Add(powerup);
+            Debug.WriteLine($"Powerup added at position {powerup.Position}."); 
         }
 
         public void Update(GameTime gameTime)
@@ -142,6 +155,22 @@ namespace GameProject.Managers
                     }
                 }
             }
+
+            if (_hero is Hero hero)
+            {
+                foreach (var powerup in _powerups.ToList())
+                {
+                    if (hero.Hitbox.Intersects(powerup.Hitbox))
+                    {
+                        powerup.ApplyEffect(hero);
+                        if (powerup is LifePowerup)
+                        {
+                            hero.RestoreFullHealth(_heartsAnimation);
+                        }
+                        _powerups.Remove(powerup);
+                    }
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -153,6 +182,11 @@ namespace GameProject.Managers
             foreach (var enemy in _enemies)
             {
                 enemy.Draw(spriteBatch);
+            }
+
+            foreach (var powerup in _powerups)
+            {
+                powerup.Draw(spriteBatch);
             }
 
             float heartScale = 0.5f; //scale of heart

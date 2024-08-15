@@ -48,7 +48,6 @@ namespace GameProject
             _graphics.PreferredBackBufferHeight = mapHeight;
             _graphics.ApplyChanges();
 
-            // Initialize the hero and slime
             _gameManager.InitializeHero(tileMap);
             _gameManager.InitializeEnemies();
         }

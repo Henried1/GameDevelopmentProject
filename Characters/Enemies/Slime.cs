@@ -4,12 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Animations;
 using GameProject.Characters.Interfaces;
 using GameProject.Characters.Player;
+using GameProject.Managers;
 
 namespace GameProject.Characters.Enemies
 {
     public class Slime : Enemy
     {
-        public Slime(Vector2 startPosition) : base(startPosition, 10, 10.0)
+        public Slime(Vector2 startPosition, GameManager gameManager)
+       : base(startPosition, 10, 10.0, gameManager) 
         {
         }
 

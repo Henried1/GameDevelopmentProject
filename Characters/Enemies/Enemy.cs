@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameProject.Animations;
 using GameProject.Characters.Interfaces;
+using GameProject.Managers;
+using GameProject.Powerups;
+using System;
+using System.Diagnostics;
 
 namespace GameProject.Characters.Enemies
 {
@@ -27,26 +31,29 @@ namespace GameProject.Characters.Enemies
         protected double _fps;
         protected double _timePerFrame;
 
-        protected double _idleTimeCounter; 
-        protected double _idleDuration = 1.0; 
+        protected double _idleTimeCounter;
+        protected double _idleDuration = 1.0;
 
-        protected double _walkDuration = 2.0; 
-        protected double _walkTimeCounter; 
+        protected double _walkDuration = 2.0;
+        protected double _walkTimeCounter;
+
+        private readonly GameManager _gameManager;
 
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
         public bool IsDead => _isDead;
         public int Damage { get; protected set; }
 
-        public Enemy(Vector2 startPosition, int healthPoints, double fps)
+        public Enemy(Vector2 startPosition, int healthPoints, double fps, GameManager gameManager)
         {
             _position = startPosition;
-            _isMovingRight = true; // Start moving right by default
+            _isMovingRight = true; 
             _isDead = false;
             _healthPoints = healthPoints;
             _fps = fps;
             _timePerFrame = 1.0 / _fps;
-            _currentState = EnemyState.Walking; // Start with walking state
+            _currentState = EnemyState.Walking; 
+            _gameManager = gameManager; 
         }
 
         protected ContentManager _content;
@@ -77,12 +84,11 @@ namespace GameProject.Characters.Enemies
 
                     if (_walkTimeCounter >= _walkDuration)
                     {
-                        _currentState = EnemyState.Idle; // Switch to idle state
-                        _walkTimeCounter = 0; // Reset walk time counter
-                        _idleTimeCounter = 0; // Reset idle time counter
+                        _currentState = EnemyState.Idle; 
+                        _walkTimeCounter = 0; 
+                        _idleTimeCounter = 0;
                     }
 
-                    // Move the enemy
                     _position.X += _isMovingRight ? 1 : -1;
                     break;
 
@@ -91,9 +97,9 @@ namespace GameProject.Characters.Enemies
 
                     if (_idleTimeCounter >= _idleDuration)
                     {
-                        _currentState = EnemyState.Walking; // Switch back to walking
-                        _isMovingRight = !_isMovingRight; // Reverse direction
-                        _walkTimeCounter = 0; // Reset walk time counter
+                        _currentState = EnemyState.Walking; 
+                        _isMovingRight = !_isMovingRight; 
+                        _walkTimeCounter = 0; 
                     }
                     break;
             }
@@ -107,7 +113,6 @@ namespace GameProject.Characters.Enemies
                 _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
             }
 
-            // Update animation based on state
             switch (_currentState)
             {
                 case EnemyState.Walking:
@@ -151,7 +156,6 @@ namespace GameProject.Characters.Enemies
                 return;
             }
 
-            // Determine the SpriteEffects based on the direction
             SpriteEffects spriteEffects = _isMovingRight ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             switch (_currentState)
@@ -176,7 +180,31 @@ namespace GameProject.Characters.Enemies
             if (_healthPoints <= 0)
             {
                 _isDead = true;
+                Debug.WriteLine("Enemy is dead. Dropping power-up."); 
+                DropPowerup();
             }
+        }
+
+
+
+        private void DropPowerup()
+        {
+            Random random = new Random();
+            int powerupType = random.Next(2);
+            Powerup powerup;
+
+            Vector2 dropPosition = new Vector2(_position.X, _position.Y + 14);
+
+            if (powerupType == 0)
+            {
+                powerup = new BubblePowerup(dropPosition);
+            }
+            else
+            {
+                powerup = new LifePowerup(dropPosition, _gameManager);
+            }
+
+            _gameManager.AddPowerup(powerup);
         }
 
         public virtual Rectangle Hitbox
