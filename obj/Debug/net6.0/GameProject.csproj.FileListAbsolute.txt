@@ -93,3 +93,15 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Run.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\Orc\Walk.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\obj\Debug\net6.0\GameProj.B6B480F2.Up2Date
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Attack.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Charge.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Dead.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Explosion.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\fireball.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Flame.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Hurt.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Idle.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Idle_2.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Run.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Shot.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\Enemies\FireSpirit\Walk.xnb

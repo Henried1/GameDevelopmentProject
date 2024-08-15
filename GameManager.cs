@@ -66,6 +66,13 @@ namespace GameProject.Managers
             orcPosition.X += 500;
             orc.Position = orcPosition;
 
+            var fireSpirit = new FireSpirit(Vector2.Zero, 100, 10.0);
+            fireSpirit.LoadContent(_content);
+
+            Vector2 fireSpiritPosition = _tileMap.FindGroundPosition(fireSpirit.Height);
+            fireSpiritPosition.X += 800;
+            fireSpirit.Position = fireSpiritPosition;
+
             if (_hero is Hero hero)
             {
                 orc.SetHeroReference(hero);
@@ -73,7 +80,9 @@ namespace GameProject.Managers
 
             _enemies.Add(slime);
             _enemies.Add(orc);
+            _enemies.Add(fireSpirit);
         }
+
         private void OnHeroDamageTaken()
         {
             if (_hero is Hero hero)

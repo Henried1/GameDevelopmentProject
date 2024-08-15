@@ -215,7 +215,7 @@ namespace GameProject.Characters.Player
             {
                 if (!enemy.IsDead)
                 {
-                    this.TakeDamage(1);
+                    this.TakeDamage(enemy.Damage); 
 
                     if (_currentState == HeroState.Attacking && AttackHitbox.Intersects(enemy.Hitbox))
                     {
@@ -224,5 +224,6 @@ namespace GameProject.Characters.Player
                 }
             }
         }
+
     }
 }

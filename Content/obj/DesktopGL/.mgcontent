@@ -4,6 +4,18 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Attack.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Charge.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Dead.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Explosion.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/fireball.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Flame.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Hurt.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Idle_2.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Idle.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Run.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Shot.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/FireSpirit/Walk.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_1.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_2.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Orc/Attack_3.png</File>
@@ -39,6 +51,18 @@
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MapAssets/Ground_02.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

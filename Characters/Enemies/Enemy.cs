@@ -36,6 +36,7 @@ namespace GameProject.Characters.Enemies
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
         public bool IsDead => _isDead;
+        public int Damage { get; protected set; }
 
         public Enemy(Vector2 startPosition, int healthPoints, double fps)
         {
