@@ -84,24 +84,24 @@ namespace GameProject.Characters.Enemies
 
                     if (_walkTimeCounter >= _walkDuration)
                     {
-                        _currentState = EnemyState.Idle; 
-                        _walkTimeCounter = 0; 
+                        _currentState = EnemyState.Idle;
+                        _walkTimeCounter = 0;
                         _idleTimeCounter = 0;
                     }
 
-                    _position.X += _isMovingRight ? 1 : -1;
-                    break;
-
-                case EnemyState.Idle:
-                    _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (_idleTimeCounter >= _idleDuration)
+                    Vector2 nextPosition = new Vector2(_position.X + (_isMovingRight ? 1 : -1), _position.Y);
+                    if (IsCollidingWithGround(nextPosition, tileMap, tileWidth, tileHeight))
                     {
-                        _currentState = EnemyState.Walking; 
-                        _isMovingRight = !_isMovingRight; 
-                        _walkTimeCounter = 0; 
+                        _currentState = EnemyState.Idle;
+                        _walkTimeCounter = 0;
+                        _idleTimeCounter = 0;
+                    }
+                    else
+                    {
+                        _position.X += _isMovingRight ? 1 : -1;
                     }
                     break;
+
             }
 
             if (!IsCollidingWithGround(_position, tileMap, tileWidth, tileHeight))
@@ -122,7 +122,9 @@ namespace GameProject.Characters.Enemies
                     _idleAnimation.Update(gameTime);
                     break;
             }
+
         }
+
 
         protected bool IsCollidingWithGround(Vector2 position, int[,] tileMap, int tileWidth, int tileHeight)
         {
@@ -134,20 +136,22 @@ namespace GameProject.Characters.Enemies
                 return false;
             }
 
-            return tileMap[tileY, tileX] == 1;
+            return tileMap[tileY, tileX] == 1 || tileMap[tileY, tileX] == 2;
         }
+
 
         protected float SnapToGround(float yPosition, int[,] tileMap, int tileWidth, int tileHeight)
         {
             int tileY = (int)((yPosition + Height) / tileHeight);
 
-            while (tileY < tileMap.GetLength(0) && tileMap[tileY, (int)(_position.X / tileWidth)] != 1)
+            while (tileY < tileMap.GetLength(0) && tileMap[tileY, (int)(_position.X / tileWidth)] != 1 && tileMap[tileY, (int)(_position.X / tileWidth)] != 2)
             {
                 tileY++;
             }
 
             return tileY * tileHeight - Height;
         }
+
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

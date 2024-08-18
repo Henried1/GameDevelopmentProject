@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Map;
+using System.Collections.Generic;
 
 namespace GameProject.Map.Levels
 {
@@ -27,11 +28,16 @@ namespace GameProject.Map.Levels
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
             };
 
-            Texture2D groundTexture = _content.Load<Texture2D>("MapAssets/Ground_02");
+            var groundTextures = new Dictionary<int, Texture2D>
+            {
+                { 1, _content.Load<Texture2D>("MapAssets/Ground_02") },
+    
+            };
+
             Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
             collisionTexture.SetData(new[] { Color.White });
 
-            return new TileMap(tileMapArray, groundTexture, collisionTexture);
+            return new TileMap(tileMapArray, groundTextures, collisionTexture);
         }
 
         public Texture2D LoadBackground()

@@ -96,6 +96,8 @@ namespace GameProject
             _mapManager.Draw(_spriteBatch);
             _gameManager.Draw(_spriteBatch);
 
+            _gameManager.DrawHitboxes(_spriteBatch);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);

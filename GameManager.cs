@@ -190,6 +190,11 @@ namespace GameProject.Managers
             return _enemies.All(enemy => enemy.IsDead);
         }
 
+        public void DrawHitboxes(SpriteBatch spriteBatch)
+        {
+            _tileMap.DrawHitboxes(spriteBatch);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             _tileMap.Draw(spriteBatch);
@@ -206,7 +211,7 @@ namespace GameProject.Managers
                 powerup.Draw(spriteBatch);
             }
 
-            float heartScale = 0.5f; 
+            float heartScale = 0.5f;
             _heartsAnimation.Draw(spriteBatch, new Vector2(0, 0), SpriteEffects.None, heartScale);
         }
     }

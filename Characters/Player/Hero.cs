@@ -40,13 +40,12 @@ namespace GameProject.Characters.Player
         private double _shieldDuration;
         private double _shieldTimer;
 
-
         public int Height => _idleAnimation?.FrameHeight ?? 0;
         public int Width => _idleAnimation?.FrameWidth ?? 0;
 
         public Hero(Vector2 startPosition, float speed)
         {
-            _movement = new PlayerMovement(startPosition, speed, 0);
+            _movement = new PlayerMovement(startPosition, speed, 0, 0); // Initial Width and Height are placeholders
             _healthPoints = 100;
             _isDead = false;
             _attackCooldown = 0.5;
@@ -61,7 +60,7 @@ namespace GameProject.Characters.Player
             var attackTexture = content.Load<Texture2D>("Hero/Attack_1");
             var jumpTexture = content.Load<Texture2D>("Hero/Jump");
             var deathTexture = content.Load<Texture2D>("Hero/Dead");
-            _bubbleTexture = content.Load<Texture2D>("Powerups/Bubble"); 
+            _bubbleTexture = content.Load<Texture2D>("Powerups/Bubble");
 
             _idleAnimation = new Animation(idleTexture, 5);
             _walkAnimation = new Animation(walkTexture, 8);
@@ -69,7 +68,8 @@ namespace GameProject.Characters.Player
             _jumpAnimation = new Animation(jumpTexture, 7);
             _deathAnimation = new Animation(deathTexture, 4);
 
-            _movement = new PlayerMovement(_movement.Position, _movement.Speed, Height);
+            // Initialize PlayerMovement with correct width and height
+            _movement = new PlayerMovement(_movement.Position, _movement.Speed, Height, Width);
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
@@ -88,7 +88,6 @@ namespace GameProject.Characters.Player
 
             _movement.Update(keyboardState, mouseState, tileMap, tileWidth, tileHeight, screenWidth, screenHeight);
 
-            // Allow movement beyond the screen width
             if (_movement.Position.X > screenWidth)
             {
                 _movement.Position = new Vector2(screenWidth, _movement.Position.Y);
@@ -124,6 +123,19 @@ namespace GameProject.Characters.Player
                     if (!_movement.IsMoving)
                     {
                         _currentState = HeroState.Idle;
+                    }
+                    else
+                    {
+                        // Check for collision before moving
+                        Vector2 nextPosition = _movement.Position + new Vector2(_movement.IsMovingRight ? _movement.Speed : -_movement.Speed, 0);
+                        if (!IsCollidingWithGround(nextPosition, tileMap, tileWidth, tileHeight))
+                        {
+                            _movement.Position = nextPosition;
+                        }
+                        else
+                        {
+                            _movement.SetIsMoving(false); // Stop the movement if a collision is detected
+                        }
                     }
                     break;
                 case HeroState.Idle:
@@ -181,7 +193,7 @@ namespace GameProject.Characters.Player
 
             if (_isShieldActive)
             {
-                float scale = 0.5f; 
+                float scale = 0.5f;
                 Vector2 bubblePosition = new Vector2(
                     _movement.Position.X + (Width / 2) - (_bubbleTexture.Width * scale / 2),
                     _movement.Position.Y + (Height / 2) - (_bubbleTexture.Height * scale / 2) + 15
@@ -191,9 +203,8 @@ namespace GameProject.Characters.Player
 
             Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             hitboxTexture.SetData(new[] { Color.Red });
-            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
+            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Blue * 0.5f);
         }
-
 
         public void TakeDamage(int damage)
         {
@@ -254,7 +265,7 @@ namespace GameProject.Characters.Player
             {
                 if (!enemy.IsDead)
                 {
-                    this.TakeDamage(enemy.Damage); 
+                    this.TakeDamage(enemy.Damage);
 
                     if (_currentState == HeroState.Attacking && AttackHitbox.Intersects(enemy.Hitbox))
                     {
@@ -263,6 +274,7 @@ namespace GameProject.Characters.Player
                 }
             }
         }
+
         public void ActivateShield(double duration)
         {
             _isShieldActive = true;
@@ -279,7 +291,19 @@ namespace GameProject.Characters.Player
         {
             _healthPoints = 100;
             heartsAnimation.CurrentFrame = 0;
+        }
 
+        private bool IsCollidingWithGround(Vector2 position, int[,] tileMap, int tileWidth, int tileHeight)
+        {
+            int tileX = (int)(position.X / tileWidth);
+            int tileY = (int)((position.Y + Height) / tileHeight);
+
+            if (tileX < 0 || tileX >= tileMap.GetLength(1) || tileY < 0 || tileY >= tileMap.GetLength(0))
+            {
+                return false;
+            }
+
+            return tileMap[tileY, tileX] == 1 || tileMap[tileY, tileX] == 2;
         }
 
     }

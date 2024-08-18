@@ -24,6 +24,7 @@ namespace GameProject.Characters.Enemies
             _walkAnimation = new Animation(walkTexture, 8);
         }
 
+
         public override void OnCollision(ICollidable other)
         {
             if (other is Hero hero)
