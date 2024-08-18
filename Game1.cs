@@ -30,13 +30,33 @@ namespace GameProject
 
             _mapManager = new MapManager(Content, GraphicsDevice);
             _gameManager = new GameManager(Content, _graphics);
-            LoadLevel1();
+             //LoadLevel1();
+             LoadLevel2(); 
         }
 
         private void LoadLevel1()
         {
             var level1 = new Level1(Content, GraphicsDevice);
             _mapManager.LoadLevel(level1);
+
+            var tileMap = _mapManager.GetTileMap();
+            int tileWidth = tileMap.TileWidth;
+            int tileHeight = tileMap.TileHeight;
+            int mapWidth = tileMap.Width * tileWidth;
+            int mapHeight = tileMap.Height * tileHeight;
+
+            _graphics.PreferredBackBufferWidth = mapWidth;
+            _graphics.PreferredBackBufferHeight = mapHeight;
+            _graphics.ApplyChanges();
+
+            _gameManager.InitializeHero(tileMap);
+            _gameManager.InitializeEnemies();
+        }
+
+        private void LoadLevel2()
+        {
+            var level2 = new Level2(Content, GraphicsDevice);
+            _mapManager.LoadLevel(level2);
 
             var tileMap = _mapManager.GetTileMap();
             int tileWidth = tileMap.TileWidth;
@@ -74,7 +94,5 @@ namespace GameProject
 
             base.Draw(gameTime);
         }
-
-
     }
 }

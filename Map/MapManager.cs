@@ -25,6 +25,12 @@ namespace GameProject.Managers
             _backgroundTexture = level.LoadBackground();
         }
 
+        public void LoadLevel(Level2 level)
+        {
+            _tileMap = level.LoadMap();
+            _backgroundTexture = level.LoadBackground();
+        }
+
         public TileMap GetTileMap()
         {
             return _tileMap;
