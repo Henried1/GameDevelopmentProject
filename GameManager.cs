@@ -1,4 +1,5 @@
-﻿using GameProject.Animations;
+﻿// GameManager.cs
+using GameProject.Animations;
 using GameProject.Characters;
 using GameProject.Characters.Player;
 using GameProject.Map;
@@ -24,16 +25,18 @@ namespace GameProject.Managers
         private TileMap _tileMap;
         private bool _isGameOver;
         private List<Powerup> _powerups = new List<Powerup>();
+        private readonly Game1 _game; // Reference to Game1
 
         private Animation _heartsAnimation;
         public Animation HeartsAnimation => _heartsAnimation;
 
-        public GameManager(ContentManager content, GraphicsDeviceManager graphics)
+        public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game)
         {
             _content = content;
             _graphics = graphics;
             _isGameOver = false;
             _enemies = new List<Enemy>();
+            _game = game; // Initialize the reference
         }
 
         public void InitializeHero(TileMap tileMap)
@@ -57,7 +60,7 @@ namespace GameProject.Managers
 
         public void InitializeEnemies()
         {
-            var slime = new Slime(Vector2.Zero, this); 
+            var slime = new Slime(Vector2.Zero, this);
             slime.LoadContent(_content);
 
             Vector2 slimePosition = _tileMap.FindGroundPosition(slime.Height);
@@ -89,7 +92,6 @@ namespace GameProject.Managers
             _enemies.Add(fireSpirit);
         }
 
-
         private void OnHeroDamageTaken()
         {
             if (_hero is Hero hero)
@@ -98,15 +100,15 @@ namespace GameProject.Managers
 
                 if (healthPercentage > 0.5f)
                 {
-                    _heartsAnimation.CurrentFrame = 0; 
+                    _heartsAnimation.CurrentFrame = 0;
                 }
                 else if (healthPercentage > 0)
                 {
-                    _heartsAnimation.CurrentFrame = 1; 
+                    _heartsAnimation.CurrentFrame = 1;
                 }
                 else
                 {
-                    _heartsAnimation.CurrentFrame = 2; 
+                    _heartsAnimation.CurrentFrame = 2;
                 }
             }
         }
@@ -115,8 +117,13 @@ namespace GameProject.Managers
         {
             powerup.LoadContent(_content);
             _powerups.Add(powerup);
-            Debug.WriteLine($"Powerup added at position {powerup.Position}."); 
+            Debug.WriteLine($"Powerup added at position {powerup.Position}.");
         }
+        public void ClearPowerups()
+        {
+            _powerups.Clear();
+        }
+
 
         public void Update(GameTime gameTime)
         {
@@ -170,7 +177,17 @@ namespace GameProject.Managers
                         _powerups.Remove(powerup);
                     }
                 }
+
+                if (AreAllEnemiesDefeated())
+                {
+                    _game.LoadNextLevel();
+                }
             }
+        }
+
+        private bool AreAllEnemiesDefeated()
+        {
+            return _enemies.All(enemy => enemy.IsDead);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -189,7 +206,7 @@ namespace GameProject.Managers
                 powerup.Draw(spriteBatch);
             }
 
-            float heartScale = 0.5f; //scale of heart
+            float heartScale = 0.5f; 
             _heartsAnimation.Draw(spriteBatch, new Vector2(0, 0), SpriteEffects.None, heartScale);
         }
     }

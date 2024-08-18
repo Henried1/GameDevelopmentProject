@@ -88,6 +88,12 @@ namespace GameProject.Characters.Player
 
             _movement.Update(keyboardState, mouseState, tileMap, tileWidth, tileHeight, screenWidth, screenHeight);
 
+            // Allow movement beyond the screen width
+            if (_movement.Position.X > screenWidth)
+            {
+                _movement.Position = new Vector2(screenWidth, _movement.Position.Y);
+            }
+
             _attackTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
             if (mouseState.LeftButton == ButtonState.Pressed && _attackTimer >= _attackCooldown)
@@ -142,6 +148,7 @@ namespace GameProject.Characters.Player
                 }
             }
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
