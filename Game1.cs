@@ -29,8 +29,9 @@ namespace GameProject
         private Rectangle _startButtonRectangle;
         private Texture2D _defeatTextTexture;
         private Texture2D _victoryTextTexture;
-
-
+        private Texture2D _replayButtonTexture;
+        private Rectangle _replayButtonRectangle;
+        private bool _wasMousePressed;
 
         public Game1()
         {
@@ -44,9 +45,8 @@ namespace GameProject
             base.Initialize();
             _currentState = GameState.StartScreen;
 
-        
-            int buttonWidth = 200; 
-            int buttonHeight = 200; 
+            int buttonWidth = 200;
+            int buttonHeight = 200;
             int buttonX = (_graphics.PreferredBackBufferWidth - buttonWidth) / 2;
             int buttonY = (_graphics.PreferredBackBufferHeight - buttonHeight) / 2;
             _startButtonRectangle = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
@@ -65,10 +65,14 @@ namespace GameProject
             _startButtonTexture = Content.Load<Texture2D>("MenuAssets/start");
             _defeatTextTexture = Content.Load<Texture2D>("MenuAssets/DefeatText");
             _victoryTextTexture = Content.Load<Texture2D>("MenuAssets/VictoryText");
+            _replayButtonTexture = Content.Load<Texture2D>("MenuAssets/Replay");
 
-
-
-
+            int buttonWidth = 200;
+            int buttonHeight = 200;
+            int buttonX = _graphics.PreferredBackBufferWidth - buttonWidth - 400; 
+            int buttonY = _graphics.PreferredBackBufferHeight - buttonHeight + 150;
+            _startButtonRectangle = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+            _replayButtonRectangle = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         }
 
         protected override void Update(GameTime gameTime)
@@ -76,10 +80,12 @@ namespace GameProject
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
+            bool isMousePressed = mouseState.LeftButton == ButtonState.Pressed;
+
             switch (_currentState)
             {
                 case GameState.StartScreen:
-                    if (mouseState.LeftButton == ButtonState.Pressed && _startButtonRectangle.Contains(mouseState.Position))
+                    if (isMousePressed && !_wasMousePressed && _startButtonRectangle.Contains(mouseState.Position))
                     {
                         LoadLevel1();
                         _currentState = GameState.Playing;
@@ -97,22 +103,19 @@ namespace GameProject
                     }
                     break;
                 case GameState.GameOver:
-                    if (keyboardState.IsKeyDown(Keys.Enter))
-                    {
-                        _currentState = GameState.StartScreen;
-                    }
-                    break;
                 case GameState.Victory:
-                    if (keyboardState.IsKeyDown(Keys.Enter))
+                    if (isMousePressed && !_wasMousePressed && _replayButtonRectangle.Contains(mouseState.Position))
                     {
-                        _currentState = GameState.StartScreen;
+                        LoadLevel1();
+                        _currentState = GameState.Playing;
                     }
                     break;
             }
 
+            _wasMousePressed = isMousePressed;
+
             base.Update(gameTime);
         }
-
 
         protected override void Draw(GameTime gameTime)
         {
@@ -135,11 +138,13 @@ namespace GameProject
                     break;
                 case GameState.GameOver:
                     _spriteBatch.Draw(_gameOverScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
-                    DrawCenteredTexture(_defeatTextTexture);
+                    DrawCenteredTexture(_defeatTextTexture, -360, 0.8f);
+                    _spriteBatch.Draw(_replayButtonTexture, _replayButtonRectangle, Color.White);
                     break;
                 case GameState.Victory:
                     _spriteBatch.Draw(_victoryScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
                     DrawCenteredTexture(_victoryTextTexture);
+                    _spriteBatch.Draw(_replayButtonTexture, _replayButtonRectangle, Color.White);
                     break;
             }
 
@@ -147,14 +152,15 @@ namespace GameProject
 
             base.Draw(gameTime);
         }
-        private void DrawCenteredTexture(Texture2D texture, int xOffset = -360)
+
+        private void DrawCenteredTexture(Texture2D texture, int xOffset = 0, float scale = 1.0f)
         {
             Vector2 position = new Vector2(
-                (_graphics.PreferredBackBufferWidth - texture.Width) / 2 + xOffset,
-                (_graphics.PreferredBackBufferHeight - texture.Height) / 2
+                (_graphics.PreferredBackBufferWidth - texture.Width * scale) / 2 + xOffset,
+                (_graphics.PreferredBackBufferHeight - texture.Height * scale) / 2
             );
 
-            _spriteBatch.Draw(texture, position, Color.White);
+            _spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
         private void LoadLevel1()
@@ -174,6 +180,7 @@ namespace GameProject
             _gameManager.InitializeHero(tileMap);
             _gameManager.InitializeEnemies(1);
             _gameManager.ClearPowerups();
+            _gameManager.ResetGameState();
         }
 
         public void LoadNextLevel()

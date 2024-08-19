@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Enemies/Slime/Attack_3.png</SourceFile>
-  <SourceTime>2023-06-06T12:49:36+02:00</SourceTime>
-  <DestFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/bin/DesktopGL/Enemies/Slime/Attack_3.xnb</DestFile>
-  <DestTime>2024-08-19T18:23:26.3106948+02:00</DestTime>
+  <SourceFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/Replay.png</SourceFile>
+  <SourceTime>2024-08-19T18:21:41.8320324+02:00</SourceTime>
+  <DestFile>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/bin/DesktopGL/MenuAssets/Replay.xnb</DestFile>
+  <DestTime>2024-08-19T18:23:59.3826637+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T13:44:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

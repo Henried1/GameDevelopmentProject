@@ -1,5 +1,4 @@
-﻿// GameManager.cs
-using GameProject.Animations;
+﻿using GameProject.Animations;
 using GameProject.Characters;
 using GameProject.Characters.Player;
 using GameProject.Map;
@@ -24,22 +23,22 @@ namespace GameProject.Managers
         private readonly ContentManager _content;
         private readonly GraphicsDeviceManager _graphics;
         private TileMap _tileMap;
-        private bool _isGameOver;
         private List<Powerup> _powerups = new List<Powerup>();
         private readonly Game1 _game;
-       
 
         private Animation _heartsAnimation;
         public Animation HeartsAnimation => _heartsAnimation;
-        public bool IsGameOver => _isGameOver;
+        public bool IsGameOver { get; private set; }
         public bool IsVictory { get; private set; }
+
         public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game)
         {
             _content = content;
             _graphics = graphics;
-            _isGameOver = false;
+            IsGameOver = false; // Initialize IsGameOver
+            IsVictory = false;  // Initialize IsVictory
             _enemies = new List<Enemy>();
-            _game = game; 
+            _game = game;
         }
 
         public void InitializeHero(TileMap tileMap)
@@ -50,7 +49,7 @@ namespace GameProject.Managers
             _hero.LoadContent(_content);
 
             Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
-            heroPosition.X = 0; 
+            heroPosition.X = 0;
             _hero.Position = heroPosition;
 
             if (_hero is Hero hero)
@@ -64,7 +63,7 @@ namespace GameProject.Managers
 
         public void InitializeEnemies(int level)
         {
-            _enemies.Clear(); 
+            _enemies.Clear();
 
             if (level == 1)
             {
@@ -99,6 +98,7 @@ namespace GameProject.Managers
                 _enemies.Add(fireSpirit);
             }
         }
+
         private Enemy CreateAndPositionEnemy(string enemyType, float xOffset, GameManager gameManager)
         {
             var enemy = EnemyFactory.CreateEnemy(enemyType, Vector2.Zero, gameManager);
@@ -138,15 +138,15 @@ namespace GameProject.Managers
             _powerups.Add(powerup);
             Debug.WriteLine($"Powerup added at position {powerup.Position}.");
         }
+
         public void ClearPowerups()
         {
             _powerups.Clear();
         }
 
-
         public void Update(GameTime gameTime)
         {
-            if (_isGameOver || IsVictory)
+            if (IsGameOver || IsVictory)
             {
                 return;
             }
@@ -167,7 +167,7 @@ namespace GameProject.Managers
 
             if (_hero.IsDead)
             {
-                _isGameOver = true;
+                IsGameOver = true;
             }
 
             if (_hero is ICollidable heroCollidable)
@@ -236,6 +236,12 @@ namespace GameProject.Managers
 
             float heartScale = 0.5f;
             _heartsAnimation.Draw(spriteBatch, new Vector2(0, 0), SpriteEffects.None, heartScale);
+        }
+
+        public void ResetGameState()
+        {
+            IsGameOver = false;
+            IsVictory = false;
         }
     }
 }

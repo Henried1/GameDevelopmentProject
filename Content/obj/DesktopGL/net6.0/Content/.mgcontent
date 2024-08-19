@@ -56,6 +56,7 @@
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MapAssets/Ground_08.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/DefeatText.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/medievalKnight.png</File>
+    <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/Replay.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/start.png</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/startScreen.jpg</File>
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/MenuAssets/Victory.png</File>
@@ -64,6 +65,7 @@
     <File>C:/Users/henry/OneDrive/Afbeeldingen/Documenten/ap hogeschool/GameDev/GameProject/GameProject/Content/Powerups/Life.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
