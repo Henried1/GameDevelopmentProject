@@ -9,6 +9,8 @@ namespace GameProject.Map
         private readonly int[,] _tileMap;
         private readonly Dictionary<int, Texture2D> _groundTextures;
         private readonly Texture2D _collisionTexture;
+        public int CurrentLevel { get; set; }
+
 
         public int TileWidth => _groundTextures[1].Width;
         public int TileHeight => _groundTextures[1].Height;

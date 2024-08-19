@@ -34,8 +34,12 @@ public class Level2 : ILevel
 
         Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
         collisionTexture.SetData(new[] { Color.White });
+        var tileMap = new TileMap(tileMapArray, groundTextures, collisionTexture)
+        {
+            CurrentLevel = 2 
+        };
 
-        return new TileMap(tileMapArray, groundTextures, collisionTexture);
+        return tileMap;
     }
 
     public Texture2D LoadBackground()

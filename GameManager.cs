@@ -26,11 +26,13 @@ namespace GameProject.Managers
         private TileMap _tileMap;
         private bool _isGameOver;
         private List<Powerup> _powerups = new List<Powerup>();
-        private readonly Game1 _game; // Reference to Game1
+        private readonly Game1 _game;
+       
 
         private Animation _heartsAnimation;
         public Animation HeartsAnimation => _heartsAnimation;
-
+        public bool IsGameOver => _isGameOver;
+        public bool IsVictory { get; private set; }
         public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game)
         {
             _content = content;
@@ -57,13 +59,12 @@ namespace GameProject.Managers
             }
 
             var heartsTexture = _content.Load<Texture2D>("Hearts");
-            _heartsAnimation = new Animation(heartsTexture, 3); 
+            _heartsAnimation = new Animation(heartsTexture, 3); // 3 frames
         }
 
         public void InitializeEnemies(int level)
         {
             _enemies.Clear(); 
-            
 
             if (level == 1)
             {
@@ -85,7 +86,7 @@ namespace GameProject.Managers
             {
                 var slime = CreateAndPositionEnemy("Slime", 50, this);
                 var orc = CreateAndPositionEnemy("Orc", 100, this);
-                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 700, this);
+                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 400, this);
 
                 if (_hero is Hero hero)
                 {
@@ -145,7 +146,7 @@ namespace GameProject.Managers
 
         public void Update(GameTime gameTime)
         {
-            if (_isGameOver)
+            if (_isGameOver || IsVictory)
             {
                 return;
             }
@@ -194,6 +195,10 @@ namespace GameProject.Managers
                         }
                         _powerups.Remove(powerup);
                     }
+                }
+                if (AreAllEnemiesDefeated() && _tileMap.CurrentLevel == 2)
+                {
+                    IsVictory = true;
                 }
 
                 if (AreAllEnemiesDefeated())

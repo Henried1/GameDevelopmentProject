@@ -36,7 +36,12 @@ namespace GameProject.Map.Levels
             Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
             collisionTexture.SetData(new[] { Color.White });
 
-            return new TileMap(tileMapArray, groundTextures, collisionTexture);
+            var tileMap = new TileMap(tileMapArray, groundTextures, collisionTexture)
+            {
+                CurrentLevel = 1
+            };
+
+            return tileMap;
         }
 
         public Texture2D LoadBackground()

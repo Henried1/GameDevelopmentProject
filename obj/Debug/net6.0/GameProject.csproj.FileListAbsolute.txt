@@ -111,3 +111,7 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MapAssets\Ground_04.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MapAssets\Ground_06.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MapAssets\Ground_08.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\medievalKnight.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\start.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\startScreen.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\Victory.xnb
