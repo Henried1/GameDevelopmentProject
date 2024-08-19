@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using GameProject.Managers;
+using GameProject.Menu;
 using GameProject.Map.Levels;
+using GameProject.Managers;
 
 namespace GameProject
 {

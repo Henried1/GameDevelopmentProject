@@ -26,6 +26,8 @@ namespace GameProject.Mechanics
         private float _deceleration;
         private float _currentSpeed;
 
+
+
         int offsetX = 0;
         int offsetY = 0;
         int offsetWidth = 30;

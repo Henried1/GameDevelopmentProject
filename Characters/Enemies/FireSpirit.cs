@@ -16,13 +16,8 @@ public class FireSpirit : Enemy
     private double _fireballCooldown;
     private double _fireballCooldownTime = 2.0;
     private Hero _hero;
-    private float _minDistance = 200f; 
-    private float _movementSpeed = 30.0f; 
-
-    private Vector2 _patrolPoint1;
-    private Vector2 _patrolPoint2;
-    private bool _movingToPoint1 = true;
-    private float _patrolSpeed = 10f;
+    private float _minDistance = 200f;
+    private float _movementSpeed = 30.0f;
 
     public FireSpirit(Vector2 startPosition, int healthPoints, double fps, GameManager gameManager)
         : base(startPosition, healthPoints, fps, gameManager)
@@ -30,10 +25,6 @@ public class FireSpirit : Enemy
         _fireballs = new List<Fireball>();
         _fireballCooldown = 0;
         _currentState = EnemyState.Walking;
-
-        // Example patrol points
-        _patrolPoint1 = new Vector2(startPosition.X - 100, startPosition.Y);
-        _patrolPoint2 = new Vector2(startPosition.X + 100, startPosition.Y);
     }
 
     public override void SetHeroReference(Hero hero)
@@ -79,7 +70,7 @@ public class FireSpirit : Enemy
             }
             else
             {
-                Patrol(gameTime);
+                Patrol(gameTime, tileMap, tileWidth, tileHeight);
             }
 
             foreach (var fireball in _fireballs)
@@ -106,7 +97,6 @@ public class FireSpirit : Enemy
                 break;
         }
     }
-
 
     private void ShootFireball()
     {
@@ -135,24 +125,52 @@ public class FireSpirit : Enemy
         return distance <= attackRange;
     }
 
-    private void Patrol(GameTime gameTime)
+    private void Patrol(GameTime gameTime, int[,] tileMap, int tileWidth, int tileHeight)
     {
-        Vector2 target = _movingToPoint1 ? _patrolPoint1 : _patrolPoint2;
-        Vector2 direction = target - _position;
-        float distance = direction.Length();
+        _timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (distance < 1f)
+        if (_timeCounter >= _timePerFrame)
         {
-            _movingToPoint1 = !_movingToPoint1;
-            _currentState = EnemyState.Idle;  
-            return;
+            _timeCounter -= _timePerFrame;
         }
 
-        direction.Normalize();
-        _position += direction * (float)(_patrolSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-        _currentState = EnemyState.Walking;  
-    }
+        switch (_currentState)
+        {
+            case EnemyState.Walking:
+                _walkTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
+                if (_walkTimeCounter >= _walkDuration)
+                {
+                    _currentState = EnemyState.Idle;
+                    _walkTimeCounter = 0;
+                    _idleTimeCounter = 0;
+                }
+
+                _position.X += _isMovingRight ? 1 : -1;
+                break;
+
+            case EnemyState.Idle:
+                _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_idleTimeCounter >= _idleDuration)
+                {
+                    _currentState = EnemyState.Walking;
+                    _idleTimeCounter = 0;
+                    _walkTimeCounter = 0;
+                    _isMovingRight = !_isMovingRight; // Change direction
+                }
+                break;
+        }
+
+        if (!IsCollidingWithGround(_position, tileMap, tileWidth, tileHeight))
+        {
+            _position.Y += 1;
+        }
+        else
+        {
+            _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
+        }
+    }
 
     public override void Draw(SpriteBatch spriteBatch)
     {
@@ -179,7 +197,6 @@ public class FireSpirit : Enemy
         }
     }
 
-
     public override void OnCollision(ICollidable other)
     {
         if (other is Hero hero)
@@ -193,3 +210,4 @@ public class FireSpirit : Enemy
         return _healthPoints > 0;
     }
 }
+

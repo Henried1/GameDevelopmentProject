@@ -41,6 +41,10 @@ namespace GameProject.Characters.Player
         private double _shieldDuration;
         private double _shieldTimer;
 
+        private bool _isSlowedDown;
+        private double _slowdownTimer;
+        private float _originalSpeed;
+
         public int Height => _idleAnimation?.FrameHeight ?? 0;
         public int Width => _idleAnimation?.FrameWidth ?? 0;
 
@@ -102,6 +106,16 @@ namespace GameProject.Characters.Player
                 _attackAnimation.CurrentFrame = 0;
             }
 
+            if (_isSlowedDown)
+            {
+                _slowdownTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_slowdownTimer >= 2.0)
+                {
+                    _movement.SetSpeed(_originalSpeed); 
+                    _isSlowedDown = false;
+                }
+            }
+
             switch (_currentState)
             {
                 case HeroState.Attacking:
@@ -126,7 +140,7 @@ namespace GameProject.Characters.Player
                     }
                     else
                     {
-                        // Check for collision before moving
+                      
                         Vector2 nextPosition = _movement.Position + new Vector2(_movement.IsMovingRight ? _movement.Speed : -_movement.Speed, 0);
                         if (!IsCollidingWithGround(nextPosition, tileMap, tileWidth, tileHeight))
                         {
@@ -134,7 +148,7 @@ namespace GameProject.Characters.Player
                         }
                         else
                         {
-                            _movement.SetIsMoving(false); // Stop the movement if a collision is detected
+                            _movement.SetIsMoving(false); 
                         }
                     }
                     break;
@@ -160,6 +174,7 @@ namespace GameProject.Characters.Player
                 }
             }
         }
+
 
 
         public void Draw(SpriteBatch spriteBatch)
@@ -203,7 +218,6 @@ namespace GameProject.Characters.Player
 
             Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             hitboxTexture.SetData(new[] { Color.Red });
-            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Blue * 0.5f);
         }
 
         public void TakeDamage(double damage)
@@ -271,6 +285,14 @@ namespace GameProject.Characters.Player
                     {
                         enemy.TakeDamage(10);
                     }
+
+                    if (enemy is Slime && !_isSlowedDown)
+                    {
+                        _originalSpeed = _movement.Speed;
+                        _movement.SetSpeed(_movement.Speed * 0.01f); 
+                        _isSlowedDown = true;
+                        _slowdownTimer = 0;
+                    }
                 }
             }
         }
@@ -305,6 +327,7 @@ namespace GameProject.Characters.Player
 
             return tileMap[tileY, tileX] == 1 || tileMap[tileY, tileX] == 2;
         }
+
 
     }
 }

@@ -46,20 +46,9 @@ namespace GameProject.Characters.Enemies
                 (int)(_texture.Height * scale)
             );
 
-            DrawRectangle(spriteBatch, fireballHitbox, Color.Red);
         }
 
-        private void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color)
-        {
-            // Draw top line
-            spriteBatch.Draw(_hitboxTexture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, 1), color);
-            // Draw left line
-            spriteBatch.Draw(_hitboxTexture, new Rectangle(rectangle.Left, rectangle.Top, 1, rectangle.Height), color);
-            // Draw right line
-            spriteBatch.Draw(_hitboxTexture, new Rectangle(rectangle.Right, rectangle.Top, 1, rectangle.Height), color);
-            // Draw bottom line
-            spriteBatch.Draw(_hitboxTexture, new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width, 1), color);
-        }
+      
 
         public bool CheckCollision(Rectangle hitbox)
         {

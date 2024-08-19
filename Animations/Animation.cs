@@ -55,7 +55,7 @@ namespace GameProject.Animations
             spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, 0, Vector2.Zero, scale, spriteEffects, 0);
         }
 
-        public void Reset()
+        public void Reset() // reset animation
         {
             _currentFrame = 0;
             _timeCounter = 0;

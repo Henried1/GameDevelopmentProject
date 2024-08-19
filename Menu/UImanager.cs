@@ -2,8 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameProject.Menu;
 
-namespace GameProject.Managers
+namespace GameProject.Menu
 {
     public class UIManager
     {
@@ -12,13 +13,12 @@ namespace GameProject.Managers
         private Texture2D _startScreenTexture;
         private Texture2D _gameOverScreenTexture;
         private Texture2D _victoryScreenTexture;
-        private Texture2D _startButtonTexture;
-        private Rectangle _startButtonRectangle;
+        private Texture2D _startButtonTexture; 
+        private Texture2D _replayButtonTexture; 
+        private Button _startButton;
+        private Button _replayButton;
         private Texture2D _defeatTextTexture;
         private Texture2D _victoryTextTexture;
-        private Texture2D _replayButtonTexture;
-        private Rectangle _replayButtonRectangle;
-        private bool _wasMousePressed;
 
         public UIManager(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, ContentManager content)
         {
@@ -34,8 +34,11 @@ namespace GameProject.Managers
             int buttonHeight = 200;
             int buttonX = (_graphics.PreferredBackBufferWidth - buttonWidth) / 2;
             int buttonY = (_graphics.PreferredBackBufferHeight - buttonHeight) / 2;
-            _startButtonRectangle = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            _replayButtonRectangle = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+            _startButton = new Button(_startButtonTexture, new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight));
+
+            int replayButtonX = buttonX - 100;
+            int replayButtonY = buttonY + 305;
+            _replayButton = new Button(_replayButtonTexture, new Rectangle(replayButtonX, replayButtonY, buttonWidth, buttonHeight));
         }
 
         private void LoadContent(ContentManager content)
@@ -51,38 +54,32 @@ namespace GameProject.Managers
 
         public bool IsStartButtonPressed(MouseState mouseState)
         {
-            bool isMousePressed = mouseState.LeftButton == ButtonState.Pressed;
-            bool isPressed = isMousePressed && !_wasMousePressed && _startButtonRectangle.Contains(mouseState.Position);
-            _wasMousePressed = isMousePressed;
-            return isPressed;
+            return _startButton.IsPressed(mouseState);
         }
 
         public bool IsReplayButtonPressed(MouseState mouseState)
         {
-            bool isMousePressed = mouseState.LeftButton == ButtonState.Pressed;
-            bool isPressed = isMousePressed && !_wasMousePressed && _replayButtonRectangle.Contains(mouseState.Position);
-            _wasMousePressed = isMousePressed;
-            return isPressed;
+            return _replayButton.IsPressed(mouseState);
         }
 
         public void DrawStartScreen()
         {
             _spriteBatch.Draw(_startScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
-            _spriteBatch.Draw(_startButtonTexture, _startButtonRectangle, Color.White);
+            _startButton.Draw(_spriteBatch);
         }
 
         public void DrawGameOverScreen()
         {
             _spriteBatch.Draw(_gameOverScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
             DrawCenteredTexture(_defeatTextTexture, -360, 0.8f);
-            _spriteBatch.Draw(_replayButtonTexture, _replayButtonRectangle, Color.White);
+            _replayButton.Draw(_spriteBatch);
         }
 
         public void DrawVictoryScreen()
         {
             _spriteBatch.Draw(_victoryScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
             DrawCenteredTexture(_victoryTextTexture);
-            _spriteBatch.Draw(_replayButtonTexture, _replayButtonRectangle, Color.White);
+            _replayButton.Draw(_spriteBatch);
         }
 
         private void DrawCenteredTexture(Texture2D texture, int xOffset = 0, float scale = 1.0f)
