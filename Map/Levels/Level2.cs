@@ -3,47 +3,44 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Map;
 using System.Collections.Generic;
-
-namespace GameProject.Map.Levels
+using GameProject.Map.Levels;
+public class Level2 : ILevel
 {
-    public class Level2
+    private readonly ContentManager _content;
+    private readonly GraphicsDevice _graphicsDevice;
+
+    public Level2(ContentManager content, GraphicsDevice graphicsDevice)
     {
-        private readonly ContentManager _content;
-        private readonly GraphicsDevice _graphicsDevice;
+        _content = content;
+        _graphicsDevice = graphicsDevice;
+    }
 
-        public Level2(ContentManager content, GraphicsDevice graphicsDevice)
+    public TileMap LoadMap()
+    {
+        int[,] tileMapArray = new int[,]
         {
-            _content = content;
-            _graphicsDevice = graphicsDevice;
-        }
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 },
+                { 1, 1, 1, 2, 2, 2, 2, 1, 1, 1 }
+        };
 
-        public TileMap LoadMap()
-        {
-            int[,] tileMapArray = new int[,]
+        var groundTextures = new Dictionary<int, Texture2D>
             {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 },
-        { 1, 1, 1, 2, 2, 2, 2, 1, 1, 1 }
+                { 1, _content.Load<Texture2D>("MapAssets/Ground_02") },
+                { 2, _content.Load<Texture2D>("MapAssets/Ground_06") }
             };
 
-            var groundTextures = new Dictionary<int, Texture2D>
+        Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
+        collisionTexture.SetData(new[] { Color.White });
+
+        return new TileMap(tileMapArray, groundTextures, collisionTexture);
+    }
+
+    public Texture2D LoadBackground()
     {
-        { 1, _content.Load<Texture2D>("MapAssets/Ground_02") },
-        { 2, _content.Load<Texture2D>("MapAssets/Ground_06") }
-    };
-
-            Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
-            collisionTexture.SetData(new[] { Color.White });
-
-            return new TileMap(tileMapArray, groundTextures, collisionTexture);
-        }
-
-
-        public Texture2D LoadBackground()
-        {
-            return _content.Load<Texture2D>("MapAssets/Background_02");
-        }
+        return _content.Load<Texture2D>("MapAssets/Background_02");
     }
 }
+

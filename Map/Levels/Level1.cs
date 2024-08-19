@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace GameProject.Map.Levels
 {
-    public class Level1
+    public class Level1 : ILevel
     {
         private readonly ContentManager _content;
         private readonly GraphicsDevice _graphicsDevice;
@@ -31,7 +31,6 @@ namespace GameProject.Map.Levels
             var groundTextures = new Dictionary<int, Texture2D>
             {
                 { 1, _content.Load<Texture2D>("MapAssets/Ground_02") },
-    
             };
 
             Texture2D collisionTexture = new Texture2D(_graphicsDevice, 1, 1);
