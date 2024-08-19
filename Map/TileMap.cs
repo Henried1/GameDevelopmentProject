@@ -56,7 +56,7 @@ namespace GameProject.Map
                     if (_tileMap[y, x] != 0)
                     {
                         Rectangle hitbox = new Rectangle(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-                        spriteBatch.Draw(_collisionTexture, hitbox, Color.Red * 0.5f);
+                       // spriteBatch.Draw(_collisionTexture, hitbox, Color.Red * 0.5f);
                     }
                 }
             }

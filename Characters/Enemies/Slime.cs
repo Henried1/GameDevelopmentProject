@@ -5,14 +5,16 @@ using GameProject.Animations;
 using GameProject.Characters.Interfaces;
 using GameProject.Characters.Player;
 using GameProject.Managers;
+using Microsoft.Xna.Framework.Input;
 
 namespace GameProject.Characters.Enemies
 {
     public class Slime : Enemy
     {
         public Slime(Vector2 startPosition, GameManager gameManager)
-       : base(startPosition, 10, 10.0, gameManager) 
+           : base(startPosition, 10, 10.0, gameManager)
         {
+            _currentState = EnemyState.Walking; // Ensure initial state is Walking
         }
 
         public override void LoadContent(ContentManager content)
@@ -24,6 +26,11 @@ namespace GameProject.Characters.Enemies
             _walkAnimation = new Animation(walkTexture, 8);
         }
 
+        public override void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
+        {
+            base.Update(gameTime, keyboardState, mouseState, tileMap, tileWidth, tileHeight, screenWidth, screenHeight);
+
+        }
 
         public override void OnCollision(ICollidable other)
         {

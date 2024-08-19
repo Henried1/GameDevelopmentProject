@@ -48,6 +48,7 @@ namespace GameProject.Managers
             _hero.LoadContent(_content);
 
             Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
+            heroPosition.X = 0; 
             _hero.Position = heroPosition;
 
             if (_hero is Hero hero)
@@ -56,24 +57,46 @@ namespace GameProject.Managers
             }
 
             var heartsTexture = _content.Load<Texture2D>("Hearts");
-            _heartsAnimation = new Animation(heartsTexture, 3); // 3 frames
+            _heartsAnimation = new Animation(heartsTexture, 3); 
         }
 
-        public void InitializeEnemies()
+        public void InitializeEnemies(int level)
         {
-            var slime = CreateAndPositionEnemy("Slime", 200, this);
-            var orc = CreateAndPositionEnemy("Orc", 500, this);
-            var fireSpirit = CreateAndPositionEnemy("FireSpirit", 800, this);
+            _enemies.Clear(); 
+            
 
-            if (_hero is Hero hero)
+            if (level == 1)
             {
-                orc.SetHeroReference(hero);
-                fireSpirit.SetHeroReference(hero);
-            }
+                var slime = CreateAndPositionEnemy("Slime", 200, this);
+                var orc = CreateAndPositionEnemy("Orc", 500, this);
+                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 800, this);
 
-            _enemies.Add(slime);
-            _enemies.Add(orc);
-            _enemies.Add(fireSpirit);
+                if (_hero is Hero hero)
+                {
+                    orc.SetHeroReference(hero);
+                    fireSpirit.SetHeroReference(hero);
+                }
+
+                _enemies.Add(slime);
+                _enemies.Add(orc);
+                _enemies.Add(fireSpirit);
+            }
+            else if (level == 2)
+            {
+                var slime = CreateAndPositionEnemy("Slime", 50, this);
+                var orc = CreateAndPositionEnemy("Orc", 100, this);
+                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 700, this);
+
+                if (_hero is Hero hero)
+                {
+                    orc.SetHeroReference(hero);
+                    fireSpirit.SetHeroReference(hero);
+                }
+
+                _enemies.Add(slime);
+                _enemies.Add(orc);
+                _enemies.Add(fireSpirit);
+            }
         }
         private Enemy CreateAndPositionEnemy(string enemyType, float xOffset, GameManager gameManager)
         {

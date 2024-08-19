@@ -27,7 +27,6 @@ namespace GameProject.Characters.Player
         private Animation _attackAnimation;
         private Animation _jumpAnimation;
         private Animation _deathAnimation;
-        private Animation _heartsAnimation;
 
         private PlayerMovement _movement;
         private int _healthPoints;
@@ -45,7 +44,7 @@ namespace GameProject.Characters.Player
 
         public Hero(Vector2 startPosition, float speed)
         {
-            _movement = new PlayerMovement(startPosition, speed, 0, 0); // Initial Width and Height are placeholders
+            _movement = new PlayerMovement(startPosition, speed, 0, 0);
             _healthPoints = 100;
             _isDead = false;
             _attackCooldown = 0.5;
@@ -68,7 +67,6 @@ namespace GameProject.Characters.Player
             _jumpAnimation = new Animation(jumpTexture, 7);
             _deathAnimation = new Animation(deathTexture, 4);
 
-            // Initialize PlayerMovement with correct width and height
             _movement = new PlayerMovement(_movement.Position, _movement.Speed, Height, Width);
         }
 

@@ -25,7 +25,7 @@ namespace GameProject.Mechanics
         int offsetX = 0; 
         int offsetY = 0;  
         int offsetWidth = 30;  
-        int offsetHeight = 0;  
+        int offsetHeight = 0;
         public PlayerMovement(Vector2 startPosition, float speed, int playerHeight, int playerWidth)
         {
             Position = startPosition;
@@ -36,10 +36,10 @@ namespace GameProject.Mechanics
             IsJumping = false;
             _isFalling = false;
             SpriteEffect = SpriteEffects.None;
-            _jumpSpeed = 10f;
+            _jumpSpeed = 17f;
             _gravity = 0.5f;
             _verticalVelocity = 0f;
-            _horizontalVelocity = 0f; 
+            _horizontalVelocity = 0f;
             _playerHeight = playerHeight;
             _playerWidth = playerWidth;
         }

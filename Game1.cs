@@ -29,9 +29,10 @@ namespace GameProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _mapManager = new MapManager(Content, GraphicsDevice);
-            _gameManager = new GameManager(Content, _graphics, this); 
+            _gameManager = new GameManager(Content, _graphics, this);
             LoadLevel1();
         }
+
         private void LoadLevel1()
         {
             _mapManager.LoadLevel(1);
@@ -47,7 +48,7 @@ namespace GameProject
             _graphics.ApplyChanges();
 
             _gameManager.InitializeHero(tileMap);
-            _gameManager.InitializeEnemies();
+            _gameManager.InitializeEnemies(1);
             _gameManager.ClearPowerups();
         }
 
@@ -66,7 +67,7 @@ namespace GameProject
             _graphics.ApplyChanges();
 
             _gameManager.InitializeHero(tileMap);
-            _gameManager.InitializeEnemies();
+            _gameManager.InitializeEnemies(2);
             _gameManager.ClearPowerups();
         }
 
@@ -80,7 +81,6 @@ namespace GameProject
             _gameManager.Update(gameTime);
             base.Update(gameTime);
         }
-
 
         protected override void Draw(GameTime gameTime)
         {

@@ -48,13 +48,13 @@ namespace GameProject.Characters.Enemies
         public Enemy(Vector2 startPosition, int healthPoints, double fps, GameManager gameManager)
         {
             _position = startPosition;
-            _isMovingRight = true; 
+            _isMovingRight = true;
             _isDead = false;
             _healthPoints = healthPoints;
             _fps = fps;
             _timePerFrame = 1.0 / _fps;
-            _currentState = EnemyState.Walking; 
-            _gameManager = gameManager; 
+            _currentState = EnemyState.Walking;
+            _gameManager = gameManager;
         }
 
         protected ContentManager _content;
@@ -92,19 +92,20 @@ namespace GameProject.Characters.Enemies
                         _idleTimeCounter = 0;
                     }
 
-                    Vector2 nextPosition = new Vector2(_position.X + (_isMovingRight ? 1 : -1), _position.Y);
-                    if (IsCollidingWithGround(nextPosition, tileMap, tileWidth, tileHeight))
-                    {
-                        _currentState = EnemyState.Idle;
-                        _walkTimeCounter = 0;
-                        _idleTimeCounter = 0;
-                    }
-                    else
-                    {
-                        _position.X += _isMovingRight ? 1 : -1;
-                    }
+                    _position.X += _isMovingRight ? 1 : -1;
                     break;
 
+                case EnemyState.Idle:
+                    _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (_idleTimeCounter >= _idleDuration)
+                    {
+                        _currentState = EnemyState.Walking;
+                        _idleTimeCounter = 0;
+                        _walkTimeCounter = 0;
+                        _isMovingRight = !_isMovingRight; // Change direction
+                    }
+                    break;
             }
 
             if (!IsCollidingWithGround(_position, tileMap, tileWidth, tileHeight))
@@ -125,9 +126,7 @@ namespace GameProject.Characters.Enemies
                     _idleAnimation.Update(gameTime);
                     break;
             }
-
         }
-
 
         protected bool IsCollidingWithGround(Vector2 position, int[,] tileMap, int tileWidth, int tileHeight)
         {
@@ -142,7 +141,6 @@ namespace GameProject.Characters.Enemies
             return tileMap[tileY, tileX] == 1 || tileMap[tileY, tileX] == 2;
         }
 
-
         protected float SnapToGround(float yPosition, int[,] tileMap, int tileWidth, int tileHeight)
         {
             int tileY = (int)((yPosition + Height) / tileHeight);
@@ -154,7 +152,6 @@ namespace GameProject.Characters.Enemies
 
             return tileY * tileHeight - Height;
         }
-
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
@@ -174,11 +171,6 @@ namespace GameProject.Characters.Enemies
                     _idleAnimation.Draw(spriteBatch, _position, spriteEffects);
                     break;
             }
-
-            // Visualize the hitbox
-            Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            hitboxTexture.SetData(new[] { Color.Red });
-            spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
         }
 
         public void TakeDamage(int damage)
@@ -187,12 +179,10 @@ namespace GameProject.Characters.Enemies
             if (_healthPoints <= 0)
             {
                 _isDead = true;
-                Debug.WriteLine("Enemy is dead. Dropping power-up."); 
+                Debug.WriteLine("Enemy is dead. Dropping power-up.");
                 DropPowerup();
             }
         }
-
-
 
         private void DropPowerup()
         {

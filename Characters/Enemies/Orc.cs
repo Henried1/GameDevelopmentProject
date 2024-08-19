@@ -16,7 +16,7 @@ public class Orc : Enemy
     private Hero _hero;
     private bool _damageApplied;
     private double _damageTimer;
-    private double _damageInterval = 3.0; 
+    private double _damageInterval = 3.0;
 
     public Orc(Vector2 startPosition, GameManager gameManager)
         : base(startPosition, 100, 10, gameManager)
@@ -24,7 +24,7 @@ public class Orc : Enemy
         _attackCooldown = _attackCooldownTime;
         _damageApplied = false;
         _damageTimer = 0;
-        Damage = 2; 
+        Damage = 2;
     }
 
     public override void SetHeroReference(Hero hero)
@@ -62,57 +62,15 @@ public class Orc : Enemy
         switch (_currentState)
         {
             case EnemyState.Walking:
-                if (IsPlayerInRange() && _attackCooldown <= 0)
-                {
-                    _currentState = EnemyState.Attacking;
-                    _attackAnimation.Reset();
-                    _damageApplied = false; 
-                    FaceHero();
-                }
-                else
-                {
-                    _walkTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (_walkTimeCounter >= _walkDuration)
-                    {
-                        _currentState = EnemyState.Idle;
-                        _walkTimeCounter = 0;
-                        _idleTimeCounter = 0;
-                    }
-
-                    _position.X += _isMovingRight ? 1 : -1;
-                }
+                HandleWalkingState(gameTime);
                 break;
 
             case EnemyState.Idle:
-                _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_idleTimeCounter >= _idleDuration)
-                {
-                    _currentState = EnemyState.Walking;
-                    _isMovingRight = !_isMovingRight;
-                    _walkTimeCounter = 0;
-                }
+                HandleIdleState(gameTime);
                 break;
 
             case EnemyState.Attacking:
-                _attackAnimation.Update(gameTime);
-
-                if (_attackAnimation.CurrentFrame == 3 && _attackAnimation.FrameJustChanged && !_damageApplied)
-                {
-                    if (this.Hitbox.Intersects(_hero.Hitbox) && _damageTimer >= _damageInterval)
-                    {
-                        _hero.TakeDamage(Damage); 
-                        _damageApplied = true; 
-                        _damageTimer = 0; 
-                    }
-                }
-
-                if (_attackAnimation.IsComplete)
-                {
-                    _currentState = EnemyState.Idle;
-                    _attackCooldown = _attackCooldownTime;
-                }
+                HandleAttackingState(gameTime);
                 break;
         }
 
@@ -125,6 +83,68 @@ public class Orc : Enemy
             _position.Y = SnapToGround(_position.Y, tileMap, tileWidth, tileHeight);
         }
 
+        UpdateAnimation(gameTime);
+    }
+
+    private void HandleWalkingState(GameTime gameTime)
+    {
+        if (IsPlayerInRange() && _attackCooldown <= 0)
+        {
+            _currentState = EnemyState.Attacking;
+            _attackAnimation.Reset();
+            _damageApplied = false;
+            FaceHero();
+        }
+        else
+        {
+            _walkTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_walkTimeCounter >= _walkDuration)
+            {
+                _currentState = EnemyState.Idle;
+                _walkTimeCounter = 0;
+                _idleTimeCounter = 0;
+            }
+
+            _position.X += _isMovingRight ? 1 : -1;
+        }
+    }
+
+    private void HandleIdleState(GameTime gameTime)
+    {
+        _idleTimeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+        if (_idleTimeCounter >= _idleDuration)
+        {
+            _currentState = EnemyState.Walking;
+            _isMovingRight = !_isMovingRight;
+            _walkTimeCounter = 0;
+        }
+    }
+
+    private void HandleAttackingState(GameTime gameTime)
+    {
+        _attackAnimation.Update(gameTime);
+
+        if (_attackAnimation.CurrentFrame == 3 && _attackAnimation.FrameJustChanged && !_damageApplied)
+        {
+            if (this.Hitbox.Intersects(_hero.Hitbox) && _damageTimer >= _damageInterval)
+            {
+                _hero.TakeDamage(Damage);
+                _damageApplied = true;
+                _damageTimer = 0;
+            }
+        }
+
+        if (_attackAnimation.IsComplete)
+        {
+            _currentState = EnemyState.Idle;
+            _attackCooldown = _attackCooldownTime;
+        }
+    }
+
+    private void UpdateAnimation(GameTime gameTime)
+    {
         switch (_currentState)
         {
             case EnemyState.Walking:
@@ -185,16 +205,10 @@ public class Orc : Enemy
                 break;
         }
 
-        Texture2D hitboxTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-        hitboxTexture.SetData(new[] { Color.Red });
-
-        spriteBatch.Draw(hitboxTexture, Hitbox, Color.Red * 0.5f);
-
-        if (_currentState == EnemyState.Attacking)
-        {
-            spriteBatch.Draw(hitboxTexture, AttackHitbox, Color.Blue * 0.5f);
-        }
+       
     }
+
+
 
     public override Rectangle Hitbox
     {

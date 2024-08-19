@@ -14,14 +14,15 @@ namespace GameProject.Characters.Enemies
     {
         private List<Fireball> _fireballs;
         private double _fireballCooldown;
-        private double _fireballCooldownTime = 2.0; 
+        private double _fireballCooldownTime = 2.0;
         private Hero _hero;
 
         public FireSpirit(Vector2 startPosition, int healthPoints, double fps, GameManager gameManager)
-           : base(startPosition, healthPoints, fps, gameManager) 
+           : base(startPosition, healthPoints, fps, gameManager)
         {
             _fireballs = new List<Fireball>();
             _fireballCooldown = 0;
+            _currentState = EnemyState.Walking;
         }
 
         public override void SetHeroReference(Hero hero)
@@ -47,9 +48,9 @@ namespace GameProject.Characters.Enemies
             {
                 return;
             }
+
             _fireballCooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
-           
             if (_hero != null && IsPlayerInRange() && _fireballCooldown <= 0)
             {
                 ShootFireball();
@@ -63,31 +64,29 @@ namespace GameProject.Characters.Enemies
                 if (fireball.CheckCollision(_hero.Hitbox))
                 {
                     _hero.TakeDamage(fireball.Damage);
-                    fireball.MarkForRemoval = true; 
+                    fireball.MarkForRemoval = true;
                 }
             }
 
             _fireballs.RemoveAll(f => f.IsOffScreen(screenWidth, screenHeight) || f.MarkForRemoval);
         }
+
+
         private void ShootFireball()
         {
             Vector2 direction = _hero.Position - _position;
             direction.Normalize();
 
-            
             float fireballOffset = 20f;
             Vector2 fireballPosition = _position + direction * fireballOffset;
 
-            fireballPosition.Y = _position.Y + 60; 
+            fireballPosition.Y = _position.Y + 60;
 
             var graphicsDeviceService = (IGraphicsDeviceService)_content.ServiceProvider.GetService(typeof(IGraphicsDeviceService));
             Fireball fireball = new Fireball(fireballPosition, direction, graphicsDeviceService.GraphicsDevice);
             fireball.LoadContent(_content);
             _fireballs.Add(fireball);
-
         }
-
-
 
         private bool IsPlayerInRange()
         {
@@ -95,7 +94,7 @@ namespace GameProject.Characters.Enemies
                 return false;
 
             float distance = Vector2.Distance(_position, _hero.Position);
-            float attackRange = 300f; 
+            float attackRange = 300f;
 
             return distance <= attackRange;
         }
@@ -117,6 +116,7 @@ namespace GameProject.Characters.Enemies
                 hero.TakeDamage(Damage);
             }
         }
+
         public bool IsAlive()
         {
             return _healthPoints > 0;
