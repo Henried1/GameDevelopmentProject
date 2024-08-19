@@ -208,5 +208,9 @@ namespace GameProject.Mechanics
         {
             IsMoving = value;
         }
+        public void SetSpeed(float speed)
+        {
+            Speed = speed;
+        }
     }
 }

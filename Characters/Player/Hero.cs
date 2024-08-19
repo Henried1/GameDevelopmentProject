@@ -29,7 +29,9 @@ namespace GameProject.Characters.Player
         private Animation _deathAnimation;
 
         private PlayerMovement _movement;
-        private int _healthPoints;
+        public PlayerMovement Movement => _movement;
+
+        private double _healthPoints;
         private bool _isDead;
         private double _attackCooldown;
         private double _attackTimer;
@@ -204,7 +206,7 @@ namespace GameProject.Characters.Player
             spriteBatch.Draw(hitboxTexture, Hitbox, Color.Blue * 0.5f);
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(double damage)
         {
             if (_isShieldActive)
             {
@@ -226,7 +228,7 @@ namespace GameProject.Characters.Player
 
         public bool IsDead => _isDead;
 
-        public int HealthPoints => _healthPoints;
+        public double HealthPoints => _healthPoints;
 
         public float HealthPercentage => (float)_healthPoints / 100;
 

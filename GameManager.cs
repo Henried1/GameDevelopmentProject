@@ -25,18 +25,20 @@ namespace GameProject.Managers
         private TileMap _tileMap;
         private List<Powerup> _powerups = new List<Powerup>();
         private readonly Game1 _game;
+        
 
         private Animation _heartsAnimation;
         public Animation HeartsAnimation => _heartsAnimation;
         public bool IsGameOver { get; private set; }
         public bool IsVictory { get; private set; }
+        public Hero Hero => _hero as Hero;
 
         public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game)
         {
             _content = content;
             _graphics = graphics;
-            IsGameOver = false; // Initialize IsGameOver
-            IsVictory = false;  // Initialize IsVictory
+            IsGameOver = false; 
+            IsVictory = false;  
             _enemies = new List<Enemy>();
             _game = game;
         }
@@ -45,7 +47,7 @@ namespace GameProject.Managers
         {
             _tileMap = tileMap;
 
-            _hero = new Hero(Vector2.Zero,2f);
+            _hero = new Hero(Vector2.Zero,3f);
             _hero.LoadContent(_content);
 
             Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
@@ -196,14 +198,17 @@ namespace GameProject.Managers
                         _powerups.Remove(powerup);
                     }
                 }
-                if (AreAllEnemiesDefeated() && _tileMap.CurrentLevel == 2)
-                {
-                    IsVictory = true;
-                }
 
                 if (AreAllEnemiesDefeated())
                 {
-                    _game.LoadNextLevel();
+                    if (_tileMap.CurrentLevel == 2)
+                    {
+                        IsVictory = true;
+                    }
+                    else
+                    {
+                        _game.LoadNextLevel();
+                    }
                 }
             }
         }

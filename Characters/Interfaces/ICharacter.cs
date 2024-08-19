@@ -12,7 +12,7 @@ namespace GameProject.Characters.Interfaces
         void Draw(SpriteBatch spriteBatch);
         int Height { get; }
         Vector2 Position { get; set; }
-        void TakeDamage(int damage);
+        void TakeDamage(double damage);
         bool IsDead { get; }
     }
 }

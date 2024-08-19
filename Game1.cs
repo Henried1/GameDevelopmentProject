@@ -55,7 +55,7 @@ namespace GameProject
                 case GameState.StartScreen:
                     if (_uiManager.IsStartButtonPressed(mouseState))
                     {
-                        LoadLevel1();
+                        LoadLevel(1);
                         _currentState = GameState.Playing;
                     }
                     break;
@@ -74,7 +74,7 @@ namespace GameProject
                 case GameState.Victory:
                     if (_uiManager.IsReplayButtonPressed(mouseState))
                     {
-                        LoadLevel1();
+                        LoadLevel(1);
                         _currentState = GameState.Playing;
                     }
                     break;
@@ -114,9 +114,9 @@ namespace GameProject
             base.Draw(gameTime);
         }
 
-        private void LoadLevel1()
+        private void LoadLevel(int levelNumber)
         {
-            _mapManager.LoadLevel(1);
+            _mapManager.LoadLevel(levelNumber);
 
             var tileMap = _mapManager.GetTileMap();
             int tileWidth = tileMap.TileWidth;
@@ -129,28 +129,14 @@ namespace GameProject
             _graphics.ApplyChanges();
 
             _gameManager.InitializeHero(tileMap);
-            _gameManager.InitializeEnemies(1);
+            _gameManager.InitializeEnemies(levelNumber);
             _gameManager.ClearPowerups();
             _gameManager.ResetGameState();
         }
 
         public void LoadNextLevel()
         {
-            _mapManager.LoadLevel(2);
-
-            var tileMap = _mapManager.GetTileMap();
-            int tileWidth = tileMap.TileWidth;
-            int tileHeight = tileMap.TileHeight;
-            int mapWidth = tileMap.Width * tileWidth;
-            int mapHeight = tileMap.Height * tileHeight;
-
-            _graphics.PreferredBackBufferWidth = mapWidth;
-            _graphics.PreferredBackBufferHeight = mapHeight;
-            _graphics.ApplyChanges();
-
-            _gameManager.InitializeHero(tileMap);
-            _gameManager.InitializeEnemies(2);
-            _gameManager.ClearPowerups();
+            LoadLevel(2);
         }
     }
 }

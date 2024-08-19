@@ -27,7 +27,7 @@ namespace GameProject.Characters.Enemies
         protected Vector2 _position;
         protected bool _isMovingRight;
         protected bool _isDead;
-        protected int _healthPoints;
+        protected double _healthPoints;
         protected double _timeCounter;
         protected double _fps;
         protected double _timePerFrame;
@@ -38,7 +38,7 @@ namespace GameProject.Characters.Enemies
         protected double _walkDuration = 2.0;
         protected double _walkTimeCounter;
 
-        private readonly GameManager _gameManager;
+        protected readonly GameManager _gameManager;
 
         public int Height => _walkAnimation?.FrameHeight ?? 0;
         public int Width => _walkAnimation?.FrameWidth ?? 0;
@@ -173,7 +173,7 @@ namespace GameProject.Characters.Enemies
             }
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(double damage)
         {
             _healthPoints -= damage;
             if (_healthPoints <= 0)
