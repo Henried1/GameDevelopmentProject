@@ -27,6 +27,10 @@ namespace GameProject
         private Texture2D _victoryScreenTexture;
         private Texture2D _startButtonTexture;
         private Rectangle _startButtonRectangle;
+        private Texture2D _defeatTextTexture;
+        private Texture2D _victoryTextTexture;
+
+
 
         public Game1()
         {
@@ -59,6 +63,11 @@ namespace GameProject
             _gameOverScreenTexture = Content.Load<Texture2D>("MenuAssets/medievalKnight");
             _victoryScreenTexture = Content.Load<Texture2D>("MenuAssets/Victory");
             _startButtonTexture = Content.Load<Texture2D>("MenuAssets/start");
+            _defeatTextTexture = Content.Load<Texture2D>("MenuAssets/DefeatText");
+            _victoryTextTexture = Content.Load<Texture2D>("MenuAssets/VictoryText");
+
+
+
 
         }
 
@@ -126,9 +135,11 @@ namespace GameProject
                     break;
                 case GameState.GameOver:
                     _spriteBatch.Draw(_gameOverScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
+                    DrawCenteredTexture(_defeatTextTexture);
                     break;
                 case GameState.Victory:
                     _spriteBatch.Draw(_victoryScreenTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
+                    DrawCenteredTexture(_victoryTextTexture);
                     break;
             }
 
@@ -136,6 +147,16 @@ namespace GameProject
 
             base.Draw(gameTime);
         }
+        private void DrawCenteredTexture(Texture2D texture, int xOffset = -360)
+        {
+            Vector2 position = new Vector2(
+                (_graphics.PreferredBackBufferWidth - texture.Width) / 2 + xOffset,
+                (_graphics.PreferredBackBufferHeight - texture.Height) / 2
+            );
+
+            _spriteBatch.Draw(texture, position, Color.White);
+        }
+
         private void LoadLevel1()
         {
             _mapManager.LoadLevel(1);

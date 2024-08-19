@@ -115,3 +115,6 @@ C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProjec
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\start.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\startScreen.xnb
 C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\Victory.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\GameFont.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\DefeatText.xnb
+C:\Users\henry\OneDrive\Afbeeldingen\Documenten\ap hogeschool\GameDev\GameProject\GameProject\bin\Debug\net6.0\Content\MenuAssets\VictoryText.xnb

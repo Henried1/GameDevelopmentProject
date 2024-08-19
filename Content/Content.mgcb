@@ -397,6 +397,13 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/Slime/Walk.png
 
+#begin GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GameFont.spritefont
+
 #begin Hearts.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -601,6 +608,18 @@
 /processorParam:TextureFormat=Color
 /build:MapAssets/Ground_08.png
 
+#begin MenuAssets/DefeatText.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:MenuAssets/DefeatText.png
+
 #begin MenuAssets/medievalKnight.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -648,6 +667,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuAssets/Victory.png
+
+#begin MenuAssets/VictoryText.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:MenuAssets/VictoryText.png
 
 #begin Powerups/Bubble.png
 /importer:TextureImporter
