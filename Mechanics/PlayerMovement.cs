@@ -39,7 +39,7 @@ namespace GameProject.Mechanics
             _jumpSpeed = 10f;
             _gravity = 0.5f;
             _verticalVelocity = 0f;
-            _horizontalVelocity = 0f; // Initialize horizontal velocity
+            _horizontalVelocity = 0f; 
             _playerHeight = playerHeight;
             _playerWidth = playerWidth;
         }
@@ -109,7 +109,6 @@ namespace GameProject.Mechanics
                 }
             }
 
-            // Prevent player from moving out of screen bounds
             if (!IsCollidingWithScreenBorders(newPosition, screenWidth, screenHeight, tileWidth, tileHeight))
             {
                 Position = newPosition;

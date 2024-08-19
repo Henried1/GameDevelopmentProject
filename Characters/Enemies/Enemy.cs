@@ -8,6 +8,7 @@ using GameProject.Managers;
 using GameProject.Powerups;
 using System;
 using System.Diagnostics;
+using GameProject.Characters.Player;
 
 namespace GameProject.Characters.Enemies
 {
@@ -57,7 +58,9 @@ namespace GameProject.Characters.Enemies
         }
 
         protected ContentManager _content;
-
+        public virtual void SetHeroReference(Hero hero)
+        {
+        }
         public virtual void LoadContent(ContentManager content)
         {
             _content = content;

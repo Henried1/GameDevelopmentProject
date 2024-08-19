@@ -24,7 +24,7 @@ namespace GameProject.Characters.Enemies
             _fireballCooldown = 0;
         }
 
-        public void SetHeroReference(Hero hero)
+        public override void SetHeroReference(Hero hero)
         {
             _hero = hero;
         }

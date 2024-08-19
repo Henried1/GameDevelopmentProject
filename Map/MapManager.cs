@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GameProject.Map;
 using GameProject.Map.Levels;
+using GameProject.Map;
 
 namespace GameProject.Managers
 {
@@ -19,14 +19,9 @@ namespace GameProject.Managers
             _graphicsDevice = graphicsDevice;
         }
 
-        public void LoadLevel(Level1 level)
+        public void LoadLevel(int levelNumber)
         {
-            _tileMap = level.LoadMap();
-            _backgroundTexture = level.LoadBackground();
-        }
-
-        public void LoadLevel(Level2 level)
-        {
+            ILevel level = LevelFactory.CreateLevel(levelNumber, _content, _graphicsDevice);
             _tileMap = level.LoadMap();
             _backgroundTexture = level.LoadBackground();
         }
@@ -43,6 +38,11 @@ namespace GameProject.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_backgroundTexture != null)
+            {
+                spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, _graphicsDevice.Viewport.Width, _graphicsDevice.Viewport.Height), Color.White);
+            }
+
             _tileMap?.Draw(spriteBatch);
         }
     }

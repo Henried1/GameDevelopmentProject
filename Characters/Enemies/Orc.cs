@@ -27,7 +27,7 @@ public class Orc : Enemy
         Damage = 2; 
     }
 
-    public void SetHeroReference(Hero hero)
+    public override void SetHeroReference(Hero hero)
     {
         _hero = hero;
     }
@@ -66,7 +66,7 @@ public class Orc : Enemy
                 {
                     _currentState = EnemyState.Attacking;
                     _attackAnimation.Reset();
-                    _damageApplied = false; // Reset the damage flag at the start of the attack
+                    _damageApplied = false; 
                     FaceHero();
                 }
                 else

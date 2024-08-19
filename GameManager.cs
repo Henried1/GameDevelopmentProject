@@ -12,49 +12,118 @@ using GameProject.Characters.Enemies;
 using System.Collections.Generic;
 using GameProject.Powerups;
 using System.Linq;
-using GameProject.Managers;
+using System.Diagnostics;
+using GameProject.Factories;
 
 namespace GameProject.Managers
 {
     public class GameManager
     {
-        private readonly ICharacter _hero;
-        private readonly List<Enemy> _enemies;
+        private ICharacter _hero;
+        private List<Enemy> _enemies;
         private readonly ContentManager _content;
         private readonly GraphicsDeviceManager _graphics;
-        private readonly TileMap _tileMap;
-        private readonly PowerupManager _powerupManager;
-        private readonly EnemyManager _enemyManager;
-        private readonly HeroManager _heroManager;
+        private TileMap _tileMap;
+        private bool _isGameOver;
+        private List<Powerup> _powerups = new List<Powerup>();
         private readonly Game1 _game; // Reference to Game1
 
         private Animation _heartsAnimation;
         public Animation HeartsAnimation => _heartsAnimation;
 
-        public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game, TileMap tileMap)
+        public GameManager(ContentManager content, GraphicsDeviceManager graphics, Game1 game)
         {
             _content = content;
             _graphics = graphics;
-            _game = game; // Initialize the reference
+            _isGameOver = false;
+            _enemies = new List<Enemy>();
+            _game = game; 
+        }
+
+        public void InitializeHero(TileMap tileMap)
+        {
             _tileMap = tileMap;
 
-            _heroManager = new HeroManager(content, tileMap);
-            _hero = _heroManager.InitializeHero();
+            _hero = new Hero(Vector2.Zero, 2f);
+            _hero.LoadContent(_content);
 
-            _enemyManager = new EnemyManager(content, tileMap, _hero);
-            _enemies = _enemyManager.InitializeEnemies();
+            Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
+            _hero.Position = heroPosition;
 
-            _powerupManager = new PowerupManager(content);
+            if (_hero is Hero hero)
+            {
+                hero.OnDamageTaken += OnHeroDamageTaken;
+            }
 
             var heartsTexture = _content.Load<Texture2D>("Hearts");
             _heartsAnimation = new Animation(heartsTexture, 3); // 3 frames
         }
 
+        public void InitializeEnemies()
+        {
+            var slime = CreateAndPositionEnemy("Slime", 200, this);
+            var orc = CreateAndPositionEnemy("Orc", 500, this);
+            var fireSpirit = CreateAndPositionEnemy("FireSpirit", 800, this);
+
+            if (_hero is Hero hero)
+            {
+                orc.SetHeroReference(hero);
+                fireSpirit.SetHeroReference(hero);
+            }
+
+            _enemies.Add(slime);
+            _enemies.Add(orc);
+            _enemies.Add(fireSpirit);
+        }
+        private Enemy CreateAndPositionEnemy(string enemyType, float xOffset, GameManager gameManager)
+        {
+            var enemy = EnemyFactory.CreateEnemy(enemyType, Vector2.Zero, gameManager);
+            enemy.LoadContent(_content);
+
+            Vector2 enemyPosition = _tileMap.FindGroundPosition(enemy.Height);
+            enemyPosition.X += xOffset;
+            enemy.Position = enemyPosition;
+
+            return enemy;
+        }
+
+        private void OnHeroDamageTaken()
+        {
+            if (_hero is Hero hero)
+            {
+                float healthPercentage = hero.HealthPercentage;
+
+                if (healthPercentage > 0.5f)
+                {
+                    _heartsAnimation.CurrentFrame = 0;
+                }
+                else if (healthPercentage > 0)
+                {
+                    _heartsAnimation.CurrentFrame = 1;
+                }
+                else
+                {
+                    _heartsAnimation.CurrentFrame = 2;
+                }
+            }
+        }
+
+        public void AddPowerup(Powerup powerup)
+        {
+            powerup.LoadContent(_content);
+            _powerups.Add(powerup);
+            Debug.WriteLine($"Powerup added at position {powerup.Position}.");
+        }
+        public void ClearPowerups()
+        {
+            _powerups.Clear();
+        }
+
+
         public void Update(GameTime gameTime)
         {
-            if (_hero.IsDead)
+            if (_isGameOver)
             {
-                _game.GameOver();
                 return;
             }
 
@@ -66,21 +135,76 @@ namespace GameProject.Managers
             int screenHeight = _graphics.PreferredBackBufferHeight;
 
             _hero.Update(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
-            _enemyManager.UpdateEnemies(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
-            _powerupManager.UpdatePowerups(_hero);
 
-            if (_enemyManager.AreAllEnemiesDefeated())
+            foreach (var enemy in _enemies)
             {
-                _game.LoadNextLevel();
+                enemy.Update(gameTime, keyboardState, mouseState, _tileMap.GetTileMapArray(), tileWidth, tileHeight, screenWidth, screenHeight);
             }
+
+            if (_hero.IsDead)
+            {
+                _isGameOver = true;
+            }
+
+            if (_hero is ICollidable heroCollidable)
+            {
+                foreach (var enemy in _enemies)
+                {
+                    if (enemy is ICollidable enemyCollidable && !enemy.IsDead && heroCollidable.Hitbox.Intersects(enemyCollidable.Hitbox))
+                    {
+                        heroCollidable.OnCollision(enemyCollidable);
+                        enemyCollidable.OnCollision(heroCollidable);
+                    }
+                }
+            }
+
+            if (_hero is Hero hero)
+            {
+                foreach (var powerup in _powerups.ToList())
+                {
+                    if (hero.Hitbox.Intersects(powerup.Hitbox))
+                    {
+                        powerup.ApplyEffect(hero);
+                        if (powerup is LifePowerup)
+                        {
+                            hero.RestoreFullHealth(_heartsAnimation);
+                        }
+                        _powerups.Remove(powerup);
+                    }
+                }
+
+                if (AreAllEnemiesDefeated())
+                {
+                    _game.LoadNextLevel();
+                }
+            }
+        }
+
+        private bool AreAllEnemiesDefeated()
+        {
+            return _enemies.All(enemy => enemy.IsDead);
+        }
+
+        public void DrawHitboxes(SpriteBatch spriteBatch)
+        {
+            _tileMap.DrawHitboxes(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _tileMap.Draw(spriteBatch);
+
             _hero.Draw(spriteBatch);
-            _enemyManager.DrawEnemies(spriteBatch);
-            _powerupManager.DrawPowerups(spriteBatch);
+
+            foreach (var enemy in _enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
+
+            foreach (var powerup in _powerups)
+            {
+                powerup.Draw(spriteBatch);
+            }
 
             float heartScale = 0.5f;
             _heartsAnimation.Draw(spriteBatch, new Vector2(0, 0), SpriteEffects.None, heartScale);

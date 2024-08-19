@@ -32,11 +32,9 @@ namespace GameProject
             _gameManager = new GameManager(Content, _graphics, this); 
             LoadLevel1();
         }
-
         private void LoadLevel1()
         {
-            var level1 = new Level1(Content, GraphicsDevice);
-            _mapManager.LoadLevel(level1);
+            _mapManager.LoadLevel(1);
 
             var tileMap = _mapManager.GetTileMap();
             int tileWidth = tileMap.TileWidth;
@@ -50,13 +48,12 @@ namespace GameProject
 
             _gameManager.InitializeHero(tileMap);
             _gameManager.InitializeEnemies();
-            _gameManager.ClearPowerups(); 
+            _gameManager.ClearPowerups();
         }
 
         private void LoadLevel2()
         {
-            var level2 = new Level2(Content, GraphicsDevice);
-            _mapManager.LoadLevel(level2);
+            _mapManager.LoadLevel(2);
 
             var tileMap = _mapManager.GetTileMap();
             int tileWidth = tileMap.TileWidth;
@@ -70,7 +67,7 @@ namespace GameProject
 
             _gameManager.InitializeHero(tileMap);
             _gameManager.InitializeEnemies();
-            _gameManager.ClearPowerups(); 
+            _gameManager.ClearPowerups();
         }
 
         public void LoadNextLevel()
