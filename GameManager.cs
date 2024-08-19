@@ -45,7 +45,7 @@ namespace GameProject.Managers
         {
             _tileMap = tileMap;
 
-            _hero = new Hero(Vector2.Zero, 2f);
+            _hero = new Hero(Vector2.Zero,2f);
             _hero.LoadContent(_content);
 
             Vector2 heroPosition = _tileMap.FindGroundPosition(_hero.Height);
@@ -85,7 +85,7 @@ namespace GameProject.Managers
             {
                 var slime = CreateAndPositionEnemy("Slime", 50, this);
                 var orc = CreateAndPositionEnemy("Orc", 100, this);
-                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 400, this);
+                var fireSpirit = CreateAndPositionEnemy("FireSpirit", 700, this);
 
                 if (_hero is Hero hero)
                 {

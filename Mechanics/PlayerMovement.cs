@@ -17,15 +17,20 @@ namespace GameProject.Mechanics
         private float _jumpSpeed;
         private float _gravity;
         private float _verticalVelocity;
-        private float _horizontalVelocity; 
+        private float _horizontalVelocity;
         private bool _isFalling;
         private int _playerHeight;
         private int _playerWidth;
-      
-        int offsetX = 0; 
-        int offsetY = 0;  
-        int offsetWidth = 30;  
+
+        private float _acceleration;
+        private float _deceleration;
+        private float _currentSpeed;
+
+        int offsetX = 0;
+        int offsetY = 0;
+        int offsetWidth = 30;
         int offsetHeight = 0;
+
         public PlayerMovement(Vector2 startPosition, float speed, int playerHeight, int playerWidth)
         {
             Position = startPosition;
@@ -42,6 +47,10 @@ namespace GameProject.Mechanics
             _horizontalVelocity = 0f;
             _playerHeight = playerHeight;
             _playerWidth = playerWidth;
+
+            _acceleration = 0.1f; 
+            _deceleration = 1.0f; 
+            _currentSpeed = 0f;
         }
 
         public void Update(KeyboardState keyboardState, MouseState mouseState, int[,] tileMap, int tileWidth, int tileHeight, int screenWidth, int screenHeight)
@@ -54,18 +63,49 @@ namespace GameProject.Mechanics
             Vector2 horizontalPosition = newPosition;
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                horizontalPosition.X -= Speed;
+                _currentSpeed -= _acceleration;
+                if (_currentSpeed < -Speed)
+                {
+                    _currentSpeed = -Speed;
+                }
+                horizontalPosition.X += _currentSpeed;
                 IsMoving = true;
                 IsMovingRight = false;
                 SpriteEffect = SpriteEffects.FlipHorizontally;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                horizontalPosition.X += Speed;
+                _currentSpeed += _acceleration;
+                if (_currentSpeed > Speed)
+                {
+                    _currentSpeed = Speed;
+                }
+                horizontalPosition.X += _currentSpeed;
                 IsMoving = true;
                 IsMovingRight = true;
                 SpriteEffect = SpriteEffects.None;
             }
+            else
+            {
+                if (_currentSpeed > 0)
+                {
+                    _currentSpeed -= _deceleration;
+                    if (_currentSpeed < 0)
+                    {
+                        _currentSpeed = 0;
+                    }
+                }
+                else if (_currentSpeed < 0)
+                {
+                    _currentSpeed += _deceleration;
+                    if (_currentSpeed > 0)
+                    {
+                        _currentSpeed = 0;
+                    }
+                }
+                horizontalPosition.X += _currentSpeed;
+            }
+
 
             if (!IsCollidingWithTile(new Vector2(horizontalPosition.X, Position.Y), tileMap, tileWidth, tileHeight))
             {
@@ -115,8 +155,6 @@ namespace GameProject.Mechanics
             }
         }
 
-
-
         private bool IsCollidingWithTile(Vector2 position, int[,] tileMap, int tileWidth, int tileHeight)
         {
             int leftTileX = (int)(position.X / tileWidth);
@@ -148,10 +186,6 @@ namespace GameProject.Mechanics
 
             return false;
         }
-
-
-
-
 
         private float SnapToGround(float yPosition, int[,] tileMap, int tileWidth, int tileHeight)
         {
